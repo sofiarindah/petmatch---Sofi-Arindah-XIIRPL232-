@@ -10,40 +10,52 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = [
-        'nama',
-        'email',
-        'username',
-        'password',
-        'role',
-    ];
+    /**
+     * Nama tabel di database (opsional jika nama tabelnya 'users')
+     */
+    protected $table = 'users';
 
+    /**
+     * Kolom yang boleh diisi secara massal (Mass Assignment)
+     */
+    protected $fillable = [
+    'nama',      
+    'name',
+    'username',
+    'email',
+    'password',
+    'role',
+];
+
+    /**
+     * Kolom yang disembunyikan saat data dikonversi ke Array/JSON
+     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
     /**
-     * ============================
-     *   🔥 RELASI USER
-     * ============================
+     * Relasi User ke Permintaan Adopsi (1 User bisa punya banyak permintaan)
      */
+    public function permintaans()
+    {
+        return $this->hasMany(Permintaan::class, 'user_id');
+    }
 
-    // 1. Relasi User -> AdminProfile (1 : 1)
+    /**
+     * Relasi User ke Chat (1 User bisa punya banyak riwayat chat)
+     */
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'user_id');
+    }
+
+    /**
+     * Relasi User ke AdminProfile (Hanya jika role-nya admin)
+     */
     public function adminProfile()
     {
         return $this->hasOne(AdminProfile::class, 'user_id');
-    }
-
-    // 2. Relasi User -> Permintaan (1 : banyak)
-    public function permintaan()
-    {
-        return $this->hasMany(\App\Models\Permintaan::class);
-    }
-
-    // 3. Relasi User -> Chat (1 : banyak)
-    public function chat()
-    {
-        return $this->hasMany(Chat::class, 'user_id');
     }
 }

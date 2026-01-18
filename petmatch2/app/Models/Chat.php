@@ -3,24 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Chat extends Model
 {
-    protected $table = 'chat'; // ← FIX di sini
+    protected $table = 'messages';
+
     protected $fillable = [
         'user_id',
         'admin_id',
-        'pesan',
-        'waktu',
+        'chat',
+        'status_read',
     ];
 
-    // Relasi: pesan dikirim oleh user
+    protected $casts = [
+        'status_read' => 'boolean',
+    ];
+
+    // Pesan dikirim oleh user
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Relasi: pesan diterima atau dibalas admin
+    // Pesan diterima / dibalas admin
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');

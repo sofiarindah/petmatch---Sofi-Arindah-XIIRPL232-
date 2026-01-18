@@ -1,81 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-    <title>PetMatch User</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetMatch User Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
-            background: #f7e9d8;
+            background: #fdf8f5; /* Warna dasar krem susu */
             margin: 0;
             font-family: 'Poppins', sans-serif;
+            color: #5d4037;
         }
 
-        /* SIDEBAR */
+        /* SIDEBAR ADMIN STYLE */
         .sidebar {
-            width: 260px;
+            width: 280px;
             height: 100vh;
             background: #ffffff;
             position: fixed;
-            padding: 25px 20px;
-            box-shadow: 3px 0 15px rgba(0,0,0,0.1);
-            border-right: 3px solid #f0d4b4;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            box-shadow: 4px 0 20px rgba(139, 115, 85, 0.05);
+            border-right: 1px solid #f3e9e2;
+            z-index: 1000;
         }
 
         .sidebar-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 40px;
+            gap: 15px;
+            padding: 0 10px;
+            margin-bottom: 50px;
         }
 
         .sidebar-logo img {
-            width: 45px;
-            height: 45px;
-            object-fit: contain;
+            width: 40px;
+            height: 40px;
         }
 
-        .sidebar h3 {
-            font-weight: 700;
-            color: #6e4c2e;
+        .sidebar-logo h3 {
+            font-weight: 800;
+            font-size: 22px;
+            color: #634832;
             margin: 0;
+            letter-spacing: -0.5px;
         }
 
-        .sidebar a {
-            display: block;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            font-size: 17px;
-            color: #4a3b2b;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: 0.2s;
+        /* MENU NAVIGATION */
+        .nav-menu {
+            flex-grow: 1;
         }
 
-        .sidebar a:hover {
-            background: #f4d9bd;
-        }
-
-        .sidebar a.active {
-            background: #e2b889;
+        .nav-label {
+            font-size: 11px;
             font-weight: 700;
-            color: white !important;
+            text-transform: uppercase;
+            color: #a68b7c;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            display: block;
         }
 
-        /* CONTENT */
+        .sidebar a, .logout-btn {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #8a6d5d;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar i {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .sidebar a:hover, .logout-btn:hover {
+            background: #fffaf7;
+            color: #634832;
+            transform: translateX(5px);
+        }
+
+        /* ACTIVE STATE */
+        .sidebar a.active {
+            background: #967e76;
+            color: #ffffff !important;
+            box-shadow: 0 8px 15px rgba(150, 126, 118, 0.25);
+        }
+
+        /* FOOTER SIDEBAR (LOGOUT) */
+        .sidebar-footer {
+            border-top: 1px solid #f3e9e2;
+            padding-top: 20px;
+        }
+
+        .logout-btn {
+            color: #dc3545; /* Warna merah untuk logout */
+        }
+
+        .logout-btn:hover {
+            background: #fff5f5;
+            color: #a71d2a;
+        }
+
+        /* CONTENT AREA */
         .content {
             margin-left: 280px;
-            padding: 30px;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 80px; padding: 20px 10px; }
+            .sidebar-logo h3, .nav-label, .sidebar span { display: none; }
+            .content { margin-left: 80px; }
+            .sidebar i { margin-right: 0; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- SIDEBAR USER -->
     <div class="sidebar">
 
         <div class="sidebar-logo">
@@ -83,26 +146,42 @@
             <h3>PetMatch</h3>
         </div>
 
-        <a href="{{ route('user.dashboard') }}"
-           class="{{ Request::is('user/dashboard') ? 'active' : '' }}">
-            <i class="bi bi-house-heart me-2"></i> Dashboard
-        </a>
+        <div class="nav-menu">
+            <span class="nav-label">Main Menu</span>
+            
+            <a href="{{ route('user.index') }}" class="{{ Request::is('user/dashboard*') ? 'active' : '' }}">
+                <i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span>
+            </a>
 
-        <hr>
+            <a href="{{ route('user.permintaan.index') }}" class="{{ Request::is('user/permintaan*') ? 'active' : '' }}">
+                <i class="bi bi-heart-pulse-fill"></i> <span>Permintaan</span>
+            </a>
 
-        <form action="#" method="POST">
-            @csrf
-            <button class="btn btn-outline-danger w-100">
-                <i class="bi bi-box-arrow-right me-2"></i> Logout
-            </button>
-        </form>
+            <a href="{{ route('messages.index') }}" class="{{ Request::is('messages*') ? 'active' : '' }}">
+                <i class="bi bi-chat-square-heart-fill"></i> <span>Pesan Chat</span>
+            </a>
+
+            <a href="{{ route('user-pembayaran.index') }}" class="{{ Request::is('user/pembayaran*') ? 'active' : '' }}">
+                <i class="bi bi-wallet2"></i> <span>List Pembayaran</span>
+            </a>
+
+        </div>
+
+        <div class="sidebar-footer">
+            <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <i class="bi bi-box-arrow-right"></i> <span>Keluar Akun</span>
+                </button>
+            </form>
+        </div>
 
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
         @yield('content')
     </div>
 
 </body>
+
 </html>

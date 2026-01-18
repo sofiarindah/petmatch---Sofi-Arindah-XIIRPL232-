@@ -35,12 +35,12 @@
     <div class="body-wrapper">
 
         <!-- HEADER -->
-        @include('admin.layouts.header')
+       
 
         <!-- CONTENT -->
-        <div class="container-fluid">
-            @yield('content')
-        </div>
+        {{-- <div class="container-fluid">
+        </div> --}}
+        @yield('content')
 
     </div>
 </div>

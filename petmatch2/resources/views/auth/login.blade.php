@@ -93,16 +93,37 @@
             font-size: 15px;
             cursor: pointer;
             color: #5d4037;
+            transition: 0.3s;
         }
 
         button:hover {
             background: #f1a89a;
+            transform: translateY(-2px);
         }
 
         .footer-text {
             margin-top: 20px;
             color: #8d6e63;
             font-size: 14px;
+        }
+
+        /* Gaya untuk link register */
+        .regis-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #8d6e63;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .regis-link strong {
+            color: #f4b6a8;
+            text-decoration: underline;
+        }
+
+        .regis-link:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -121,17 +142,22 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.login.process') }}" method="POST">
+        <form action="{{ route('login.process') }}" method="POST">
             @csrf
 
             <label>EMAIL</label>
-            <input type="text" name="email" placeholder="Masukkan Email Anda">
+            <input type="email" name="email" required>
 
             <label>PASSWORD</label>
-            <input type="password" name="password" placeholder="Masukkan Password Anda">
+            <input type="password" name="password" required>
 
             <button type="submit">Login</button>
         </form>
+
+        {{-- Teks Tambahan --}}
+        <a href="{{ route('register') }}" class="regis-link">
+            Belum punya akun? <strong>Regis dulu!</strong>
+        </a>
     </div>
 
     <div class="footer-text">Isi terlebih dahulu!</div>

@@ -35,11 +35,29 @@
             {{-- Umur --}}
             <div class="mb-3">
                 <label class="form-label">Umur</label>
-                <input type="number"
+                <input type="text"
                        name="umur"
                        class="form-control @error('umur') is-invalid @enderror"
                        value="{{ old('umur', $hewan->umur) }}">
                 @error('umur') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+
+            {{-- Gender --}}
+            <div class="mb-3">
+                <label class="form-label">Jenis Kelamin</label>
+                <select name="gender"
+                        class="form-select @error('gender') is-invalid @enderror">
+                    <option value="">Pilih Jenis Kelamin</option>
+                    <option value="jantan" {{ old('gender') == 'jantan' ? 'selected' : '' }}>
+                        Jantan
+                    </option>
+                    <option value="betina" {{ old('gender') == 'betina' ? 'selected' : '' }}>
+                        Betina
+                    </option>
+                </select>
+                @error('gender')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
             {{-- Deskripsi --}}

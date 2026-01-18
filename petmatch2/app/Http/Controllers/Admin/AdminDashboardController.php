@@ -4,18 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pelanggan;
+use App\Models\Permintaan;
 use App\Models\Hewan;
 use App\Models\User;
+use App\Models\Chat;
 
 class AdminDashboardController extends Controller
 {
     public function index()
-{
-    return view('admin.dashboard.index', [
-        'total_hewan' => Hewan::count(),
-        'total_pengadopsi' => User::count(),
-        'pelanggan' => Pelanggan::with(['user', 'hewan'])->get(),
-        'total_permintaan' => Pelanggan::count()
-    ]);
-}
+    {
+        // dd(auth()->user());
+        return view('admin.dashboard.index', [
+            'totalHewan'      => Hewan::count(),
+            'totalPermintaan' => Permintaan::count(),
+            'totalPesan'      => Chat::count(),
+        ]);
+    }
 }

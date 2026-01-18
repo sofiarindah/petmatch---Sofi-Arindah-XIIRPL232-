@@ -47,8 +47,8 @@ class AdminProfileController extends Controller
         // Ganti foto jika ada
         if ($request->hasFile('foto')) {
 
-            if ($user->foto && File::exists(public_path('storage/'.$user->foto))) {
-                File::delete(public_path('storage/'.$user->foto));
+            if ($user->foto && File::exists(public_path('storage/' . $user->foto))) {
+                File::delete(public_path('storage/' . $user->foto));
             }
 
             $validated['foto'] = $request->file('foto')->store('foto-admin');

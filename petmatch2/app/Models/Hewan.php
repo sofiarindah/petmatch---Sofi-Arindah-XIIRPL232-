@@ -12,9 +12,20 @@ class Hewan extends Model
         'nama',
         'jenis',
         'umur',
+        'gender',
         'deskripsi',
         'foto',
         'kondisi',
         'status',
     ];
+
+    public function permintaans()
+    {
+        return $this->hasMany(Permintaan::class);
+    }
+
+    public function adopsis()
+    {
+        return $this->hasMany(Adopsi::class, 'hewan_id');
+    }
 }

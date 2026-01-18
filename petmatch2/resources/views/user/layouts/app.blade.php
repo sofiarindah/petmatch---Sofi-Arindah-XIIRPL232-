@@ -53,7 +53,7 @@
 <!-- BOOTSTRAP CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- TEMPLATE JS (LOCAL – WAJIB) -->
+<!-- TEMPLATE JS -->
 <script src="{{ asset('template-admin/src/assets/js/sidebarmenu.js') }}"></script>
 <script src="{{ asset('template-admin/src/assets/js/app.min.js') }}"></script>
 <script src="{{ asset('template-admin/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>

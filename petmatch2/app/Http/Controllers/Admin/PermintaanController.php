@@ -9,32 +9,19 @@ class PermintaanController extends Controller
 {
     public function index()
     {
-        $permintaan = Permintaan::with(['user', 'hewan'])
-            ->latest()
+        $permintaans = Permintaan::with(['user', 'hewan'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('admin.permintaan.index', compact('permintaan'));
+        return view('admin.permintaan.index', compact('permintaans'));
     }
 
-    public function show($id)
-    {
-        $permintaan = Permintaan::with(['user', 'hewan'])->findOrFail($id);
-        return view('admin.permintaan.show', compact('permintaan'));
-    }
-
-    public function setuju($id)
+    public function terima($id)
     {
         $permintaan = Permintaan::findOrFail($id);
         $permintaan->update(['status' => 'diterima']);
 
-        logActivity(
-            "Menyetujui Permintaan",
-            "Permintaan ID: $id | Hewan: " . $permintaan->hewan->nama
-        );
-
-        return redirect()
-            ->route('admin.permintaan.index')
-            ->with('success', 'Permintaan berhasil disetujui');
+        return back()->with('success', 'Permintaan diterima');
     }
 
     public function tolak($id)
@@ -42,13 +29,6 @@ class PermintaanController extends Controller
         $permintaan = Permintaan::findOrFail($id);
         $permintaan->update(['status' => 'ditolak']);
 
-        logActivity(
-            "Menolak Permintaan",
-            "Permintaan ID: $id | Hewan: " . $permintaan->hewan->nama
-        );
-
-        return redirect()
-            ->route('admin.permintaan.index')
-            ->with('success', 'Permintaan berhasil ditolak');
+        return back()->with('success', 'Permintaan ditolak');
     }
 }

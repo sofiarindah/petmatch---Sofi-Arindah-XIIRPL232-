@@ -14,29 +14,25 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // validasi
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // attempt login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // 🔑 BEDAKAN ROLE
+            // cek role
             if (auth()->user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
 
-            // default = user
-            return redirect()->route('user.dashboard');
+            return redirect()->route('user.index');
         }
 
-        // gagal login
         return back()->withErrors([
             'email' => 'Email atau password salah!',
-        ])->withInput();
+        ]);
     }
 
     public function logout(Request $request)
@@ -46,6 +42,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login');
+        return redirect()->route('login');
     }
 }

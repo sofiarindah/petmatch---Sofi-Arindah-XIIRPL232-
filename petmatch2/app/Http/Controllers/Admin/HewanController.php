@@ -25,7 +25,8 @@ class HewanController extends Controller
         $data = $request->validate([
             'nama'       => 'required',
             'jenis'      => 'required',
-            'umur'       => 'required|integer',
+            'umur'       => 'required|string',
+            'gender'     => 'required|in:jantan,betina',
             'deskripsi'  => 'required',
             'foto'       => 'nullable|image|mimes:jpg,jpeg,png',
             'kondisi'    => 'required|in:Baik,Sakit',
@@ -54,7 +55,8 @@ class HewanController extends Controller
         $data = $request->validate([
             'nama'       => 'required',
             'jenis'      => 'required',
-            'umur'       => 'required|integer',
+            'umur'       => 'required|string',
+            'gender'     => 'required|in:jantan,betina',
             'deskripsi'  => 'required',
             'foto'       => 'nullable|image|mimes:jpg,jpeg,png',
             'kondisi'    => 'required|in:Baik,Sakit',
@@ -78,10 +80,20 @@ class HewanController extends Controller
     }
 
     public function destroy($id)
-    {
-        Hewan::findOrFail($id)->delete();
+{
+    $hewan = Hewan::findOrFail($id);
 
-        return redirect()->route('admin.hewan.index')
-            ->with('success', 'Data hewan berhasil dihapus');
+    if ($hewan->foto) {
+        $path = public_path('photos/' . $hewan->foto);
+        if (file_exists($path)) {
+            unlink($path);
+        }
     }
+
+    // Hapus data dari database
+    $hewan->delete();
+
+    return redirect()->route('admin.hewan.index')
+                     ->with('success', 'Data hewan berhasil dihapus!');
+}
 }

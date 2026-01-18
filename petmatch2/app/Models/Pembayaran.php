@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pembayaran extends Model
 {
+    use HasFactory;
+
+    protected $table = 'pembayarans'; // sesuai migration
+
     protected $fillable = [
-        'permintaan_id',
-        'total',
-        'metode',
+        'user_id',
+        'kode_pembayaran',
+        'jumlah',
+        'bukti',
         'status',
     ];
 
-    // Relasi: pembayaran milik permintaan
-    public function permintaan()
+    public function user()
     {
-        return $this->belongsTo(Permintaan::class);
+        return $this->belongsTo(User::class);
     }
 }

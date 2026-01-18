@@ -1,120 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetMatch User</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         body {
-            background: #f7e9d8;
+            background: #fdf8f5;
             margin: 0;
             font-family: 'Poppins', sans-serif;
         }
 
-        /* SIDEBAR */
+        /* SIDEBAR CUSTOM */
         .sidebar {
-            width: 260px;
+            width: 280px;
             height: 100vh;
             background: #ffffff;
             position: fixed;
-            padding: 25px 20px;
-            box-shadow: 3px 0 15px rgba(0,0,0,0.1);
-            border-right: 3px solid #f0d4b4;
+            padding: 35px 20px;
+            box-shadow: 5px 0 25px rgba(139, 115, 85, 0.05);
+            border-right: 2px solid #f3e9e2;
+            z-index: 1000;
         }
 
         .sidebar-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 40px;
+            gap: 15px;
+            margin-bottom: 50px;
+            padding-left: 10px;
         }
 
         .sidebar-logo img {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
+            filter: sepia(0.3);
         }
 
         .sidebar h3 {
-            font-weight: 700;
-            color: #6e4c2e;
+            font-weight: 800;
+            color: #634832;
             margin: 0;
+            font-size: 22px;
+            letter-spacing: -0.5px;
         }
 
+        /* MENU LINKS */
         .sidebar a {
-            display: block;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            font-size: 17px;
-            color: #4a3b2b;
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #967e76;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: 0.2s;
+            border-radius: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a i {
+            font-size: 1.2rem;
+            margin-right: 15px;
         }
 
         .sidebar a:hover {
-            background: #f4d9bd;
+            background: #fffaf7;
+            color: #634832;
+            transform: translateX(5px);
         }
 
         .sidebar a.active {
-            background: #e2b889;
-            font-weight: 700;
-            color: white !important;
+            background: #967e76;
+            color: #ffffff !important;
+            box-shadow: 0 8px 15px rgba(150, 126, 118, 0.25);
         }
 
-        /* CONTENT */
+        .sidebar hr {
+            border-top: 2px solid #f3e9e2;
+            margin: 25px 0;
+            opacity: 1;
+        }
+
+        .logout-link {
+            color: #d63384 !important; /* Warna pink kecokelatan untuk logout */
+        }
+
+        .logout-link:hover {
+            background: #fff0f3 !important;
+        }
+
+        /* CONTENT AREA */
         .content {
             margin-left: 280px;
-            padding: 30px;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        /* Scrollbar Sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #f3e9e2;
+            border-radius: 10px;
         }
     </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR USER -->
-<div class="sidebar">
+    <div class="sidebar">
 
-    <div class="sidebar-logo">
-        <img src="https://cdn-icons-png.flaticon.com/512/194/194279.png" alt="logo">
-        <h3>PetMatch</h3>
+        <div class="sidebar-logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/194/194279.png" alt="logo">
+            <h3>PetMatch</h3>
+        </div>
+
+        <nav>
+            <a href="{{ route('admin.dashboard') }}"
+                class="{{ Request::is('admin/dashboard') || Request::is('user/dashboard') ? 'active' : '' }}">
+                <i class="bi bi-grid-1x2-fill"></i> Beranda
+            </a>
+
+            <a href="{{ route('admin.categories.index') }}"
+                class="{{ Request::is('admin/categories*') || Request::is('user/categories*') ? 'active' : '' }}">
+                <i class="bi bi-collection-fill"></i> Kategori
+            </a>
+
+            <a href="{{ route('admin.hewan.index') }}"
+                class="{{ Request::is('admin/hewan*') || Request::is('user/hewan*') ? 'active' : '' }}">
+                <i class="bi bi-heart-pulse-fill"></i> Hewan
+            </a>
+
+            <a href="{{ route('admin.permintaan.index') }}"
+                class="{{ Request::is('admin/permintaan*') || Request::is('user/permintaan*') ? 'active' : '' }}">
+                <i class="bi bi-envelope-paper-heart-fill"></i> Permintaan
+            </a>
+
+            <a href="{{ route('messages.index') }}"
+                class="{{ Request::is('messages*') || Request::is('user/messages*') ? 'active' : '' }}">
+                <i class="bi bi-chat-right-text-fill"></i> Chat
+            </a>
+
+            <a href="{{ route('admin.pembayaran.index') }}"
+                class="{{ Request::is('admin/pembayaran*') || Request::is('user/pembayaran*') ? 'active' : '' }}">
+                <i class="bi bi-credit-card-2-back-fill"></i> Pembayaran
+            </a>
+
+            <hr>
+
+            <a href="{{ route('logout') }}" class="logout-link"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right"></i> Keluar
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </nav>
+
     </div>
 
-    <a href="{{ route('admin.dashboard') }}"
-       class="{{ Request::is('user/dashboard') ? 'active' : '' }}">
-        <i class="bi bi-house-heart me-2"></i> Beranda
-    </a>
-
-    <a href="{{ route('admin.hewan.index') }}"
-       class="{{ Request::is('user/hewan*') ? 'active' : '' }}">
-        <i class="bi bi-search-heart me-2"></i> Cari Hewan
-    </a>
-
-    <a href="{{ route('admin.permintaan.index') }}"
-       class="{{ Request::is('user/permintaan*') ? 'active' : '' }}">
-        <i class="bi bi-send-heart me-2"></i> Permintaan Saya
-    </a>
-
-    <hr>
-
-    <a href="{{ route('admin.logout') }}"
-       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        <i class="bi bi-box-arrow-right me-2"></i> Logout
-    </a>
-
-    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
-        @csrf
-    </form>
-
-</div>
-
-<!-- CONTENT -->
-<div class="content">
-    @yield('content')
-</div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
