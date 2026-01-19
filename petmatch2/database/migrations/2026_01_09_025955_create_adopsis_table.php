@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('hewan_id')->constrained('hewan')->cascadeOnDelete();
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['diajukan', 'approved', 'rejected'])->default('diajukan');
             $table->text('catatan')->nullable();
             $table->timestamps();
         });

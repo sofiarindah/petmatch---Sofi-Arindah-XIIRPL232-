@@ -146,7 +146,7 @@
                         </td>
                         <td>
                             <span class="status-badge 
-                                @if($p->status=='pending') badge-p
+                                @if($p->status=='diajukan') badge-p
                                 @elseif($p->status=='diterima') badge-a
                                 @else badge-r
                                 @endif">
@@ -154,7 +154,7 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            @if($p->status == 'pending')
+                            @if($p->status == 'diajukan')
                                 <div class="d-flex gap-2 justify-content-center">
                                     <form method="POST" action="{{ route('admin.permintaan.terima', $p->id) }}">
                                         @csrf

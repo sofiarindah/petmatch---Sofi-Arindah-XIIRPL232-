@@ -35,7 +35,7 @@ class PermintaanController extends Controller
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
             'pekerjaan' => $request->pekerjaan,
-            'status' => 'pending'
+            'status' => 'diajukan'
         ]);
 
         return back()->with('success','Permintaan berhasil dikirim');

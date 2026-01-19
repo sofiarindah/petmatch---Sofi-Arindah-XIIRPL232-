@@ -15,13 +15,19 @@ class PembayaranController extends Controller
 
     public function terima($id)
     {
-        Pembayaran::findOrFail($id)->update(['status' => 'diterima']);
-        return back();
+        Pembayaran::findOrFail($id)->update([
+            'status' => 'diterima'
+        ]);
+
+        return back()->with('success', 'Pembayaran diterima');
     }
 
     public function tolak($id)
     {
-        Pembayaran::findOrFail($id)->update(['status' => 'ditolak']);
-        return back();
+        Pembayaran::findOrFail($id)->update([
+            'status' => 'ditolak'
+        ]);
+
+        return back()->with('success', 'Pembayaran ditolak');
     }
 }

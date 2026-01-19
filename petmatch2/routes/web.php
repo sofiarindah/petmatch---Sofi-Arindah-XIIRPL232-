@@ -112,7 +112,9 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('user-pembayaran/{pembayaran}', [UserPembayaran::class, 'destroy'])
         ->name('user-pembayaran.destroy');
-
+    
+    Route::get('/user-pembayaran/{pembayaran}/nota', [UserPembayaran::class, 'nota'])
+    ->name('user-pembayaran.nota');
 
     // Detail
     Route::get('/detail/{id}', [DetailController::class, 'index'])

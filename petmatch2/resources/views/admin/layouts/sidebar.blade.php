@@ -145,9 +145,8 @@
                 <i class="bi bi-envelope-paper-heart-fill"></i> Permintaan
             </a>
 
-            <a href="{{ route('messages.index') }}"
-                class="{{ Request::is('messages*') || Request::is('user/messages*') ? 'active' : '' }}">
-                <i class="bi bi-chat-right-text-fill"></i> Chat
+            <a href="{{ route('messages.index') }}" class="{{ Request::is('messages*') ? 'active' : '' }}">
+                <i class="bi bi-chat-square-heart-fill"></i> <span>Pesan Chat</span>
             </a>
 
             <a href="{{ route('admin.pembayaran.index') }}"

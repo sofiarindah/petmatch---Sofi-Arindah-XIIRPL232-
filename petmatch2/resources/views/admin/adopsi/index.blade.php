@@ -18,7 +18,7 @@
             <td>{{ $a->hewan->nama }}</td>
             <td>{{ $a->status }}</td>
             <td>
-                @if($a->status == 'pending')
+                @if($a->status == 'diajukan')
                 <form action="{{ route('admin.adopsi.approve',$a) }}" method="POST" class="d-inline">
                     @csrf @method('PATCH')
                     <button class="btn btn-sm btn-success">Setujui</button>

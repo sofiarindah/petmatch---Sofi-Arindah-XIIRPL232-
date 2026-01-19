@@ -14,22 +14,20 @@ class MessageController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-        return view('messages.index');
-
-        $authUser = auth()->user();
+{
+    $authUser = auth()->user();
 
     if ($authUser->role === 'admin') {
-        // Admin → ambil user pertama / aktif
-        $chatUser = User::where('role', 'admin')->first();
-    } else {
-        // User → lawan chat adalah admin
+        // admin chatting with user
         $chatUser = User::where('role', 'user')->first();
+    } else {
+        // user chatting with admin
+        $chatUser = User::where('role', 'admin')->first();
     }
 
     return view('messages.index', compact('chatUser'));
-    }
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -51,8 +49,8 @@ class MessageController extends Controller
         // dd($request->chat);
 
         $message = Chat::create([
-            'user_id'     => Auth::id(),
-            'chat'        => $request->chat,
+            'user_id' => Auth::id(),
+            'chat' => $request->chat,
             'status_read' => 0
         ]);
 

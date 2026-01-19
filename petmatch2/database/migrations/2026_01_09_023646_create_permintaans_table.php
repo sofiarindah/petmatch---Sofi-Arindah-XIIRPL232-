@@ -18,7 +18,7 @@ return new class extends Migration {
     $table->text('alamat');
     $table->string('pekerjaan');
 
-    $table->enum('status', ['pending','diterima','ditolak'])->default('pending');
+    $table->enum('status', ['diajukan','diterima','ditolak'])->default('diajukan');
     $table->timestamps();
 });
 

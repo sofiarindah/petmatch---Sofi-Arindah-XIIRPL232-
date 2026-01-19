@@ -30,7 +30,7 @@ class AdopsiController extends Controller
         Adopsi::create([
             'user_id'  => Auth::id(),
             'hewan_id' => $request->hewan_id,
-            'status'   => 'pending',
+            'status'   => 'diajukan',
         ]);
 
         return back()->with('success', 'Permintaan adopsi berhasil dikirim!');

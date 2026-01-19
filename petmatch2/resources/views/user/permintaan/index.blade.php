@@ -172,7 +172,7 @@
                         <td class="fw-bold text-secondary">{{ $p->hewan->nama }}</td>
                         <td>
                             <span class="badge 
-                                @if($p->status=='pending') bg-warning text-dark
+                                @if($p->status=='diajukan') bg-warning text-dark
                                 @elseif($p->status=='diterima') bg-success
                                 @else bg-danger
                                 @endif">

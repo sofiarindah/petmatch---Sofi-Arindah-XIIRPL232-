@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use Illuminate\Http\Response;
+
 
 class Pembayaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'pembayarans'; // sesuai migration
+    protected $table = 'pembayarans';
 
     protected $fillable = [
         'user_id',
