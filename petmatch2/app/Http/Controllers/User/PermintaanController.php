@@ -10,22 +10,30 @@ use Illuminate\Support\Facades\Auth;
 
 class PermintaanController extends Controller
 {
+    // ======================
+    // LIST PERMINTAAN USER
+    // ======================
     public function index()
     {
         return view('user.permintaan.index', [
             'hewans' => Hewan::all(),
-            'permintaans' => Permintaan::where('user_id', Auth::id())->get()
+            'permintaans' => Permintaan::where('user_id', Auth::id())
+                ->latest()
+                ->get()
         ]);
     }
 
+    // ======================
+    // SIMPAN PERMINTAAN
+    // ======================
     public function store(Request $request)
     {
         $request->validate([
-            'hewan_id' => 'required',
-            'nama_lengkap' => 'required',
-            'no_hp' => 'required',
-            'alamat' => 'required',
-            'pekerjaan' => 'required',
+            'hewan_id' => 'required|exists:hewan,id',
+            'nama_lengkap' => 'required|string',
+            'no_hp' => 'required|string',
+            'alamat' => 'required|string',
+            'pekerjaan' => 'required|string',
         ]);
 
         Permintaan::create([
@@ -38,6 +46,24 @@ class PermintaanController extends Controller
             'status' => 'diajukan'
         ]);
 
-        return back()->with('success','Permintaan berhasil dikirim');
+        return back()->with('success', 'Permintaan berhasil dikirim');
+    }
+
+    // ======================
+    // NOTA ADOPSI (BUKTI)
+    // ======================
+    public function nota(Permintaan $permintaan)
+    {
+        // pastikan milik user yang login
+        if ($permintaan->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // hanya bisa jika diterima admin
+        if ($permintaan->status !== 'diterima') {
+            abort(404);
+        }
+
+        return view('user.permintaan.nota', compact('permintaan'));
     }
 }

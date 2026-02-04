@@ -186,12 +186,6 @@
             <div class="stat-value">{{ $totalPermintaan }}</div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon"><i class="bi bi-chat-left-dots"></i></div>
-            <div class="stat-title">Pesan Masuk</div>
-            <div class="stat-value">{{ $totalPesan }}</div>
-        </div>
-
     </div>
 
     <div class="row">
@@ -206,11 +200,6 @@
                 <a href="{{ route('admin.permintaan.index') }}" class="menu-card text-decoration-none">
                     <i class="bi bi-file-earmark-check menu-icon"></i>
                     <div class="menu-title">Cek Permintaan</div>
-                </a>
-
-                <a href="{{ route('messages.index') }}" class="menu-card text-decoration-none">
-                    <i class="bi bi-chat-quote menu-icon"></i>
-                    <div class="menu-title">Lihat Pesan</div>
                 </a>
             </div>
         </div>

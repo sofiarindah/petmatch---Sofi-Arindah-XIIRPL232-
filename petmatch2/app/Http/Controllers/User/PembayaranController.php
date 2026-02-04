@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Models\Permintaan;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,26 +11,36 @@ use Illuminate\Support\Str;
 
 class PembayaranController extends Controller
 {
-    // Tampilkan semua pembayaran user
+    // LIST DATA PEMBAYARAN USER
     public function index()
     {
-        $pembayaran = Pembayaran::where('user_id', Auth::id())->latest()->get();
+        $pembayaran = Pembayaran::where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
         return view('user.pembayaran.index', compact('pembayaran'));
     }
 
-    // Form tambah pembayaran
+    // FORM TAMBAH PEMBAYARAN
     public function create()
-    {
-        return view('user.pembayaran.create');
-    }
+{
+    $permintaans = Permintaan::with('hewan')
+        ->where('user_id', auth()->id())
+        ->where('status', 'diterima') // hanya yang disetujui admin
+        ->get();
 
-    // Simpan pembayaran baru
+    return view('user.pembayaran.create', compact('permintaans'));
+}
+
+    // SIMPAN PEMBAYARAN
     public function store(Request $request)
 {
     $request->validate([
-        'jumlah' => 'required|integer',
-        'bukti' => 'nullable|image|max:2048',
-    ]);
+    'permintaan_id' => 'required|exists:permintaans,id',
+    'jumlah'        => 'required|integer',
+    'bukti'         => 'nullable|image|max:2048',
+]);
+
 
     $buktiPath = null;
     if ($request->hasFile('bukti')) {
@@ -38,30 +48,42 @@ class PembayaranController extends Controller
     }
 
     Pembayaran::create([
-        'user_id' => auth()->id(),
-        'kode_pembayaran' => 'PAY-' . strtoupper(Str::random(8)),
-        'jumlah' => $request->jumlah,
-        'bukti' => $buktiPath,
-        'status' => 'diajukan',
-    ]);
+    'user_id'       => auth()->id(),
+    'kode_pembayaran' => 'PAY-' . strtoupper(Str::random(8)),
+    'jumlah'        => $request->jumlah,
+    'bukti'         => $buktiPath,
+    'status'        => 'diajukan',
+]);
 
-    // ⛔ JANGAN redirect ke nota
+
     return redirect()
         ->route('user-pembayaran.index')
-        ->with('success', 'Pembayaran berhasil dikirim, menunggu konfirmasi admin.');
+        ->with('success', 'Pembayaran berhasil dikirim');
 }
 
 
+    // DETAIL PEMBAYARAN
+public function detail(Pembayaran $pembayaran)
+{
+    $pembayaran->load([
+        'user',
+        'permintaan.hewan' 
+    ]);
 
-    // Form edit pembayaran
-    public function edit(Pembayaran $pembayaran)
-    {
-        $this->authorize('update', $pembayaran);
-        return view('user.pembayaran.edit', compact('pembayaran'));
-    }
+    return view('user.pembayaran.detail', compact('pembayaran'));
+}
 
-    // Update pembayaran
-    public function update(Request $request, Pembayaran $pembayaran)
+
+    // NOTA PEMBAYARAN
+   public function nota(Pembayaran $pembayaran)
+{
+    // pastikan eager load permintaan + hewan supaya tidak n+1
+    $pembayaran->load('permintaan.hewan', 'user');
+
+    return view('user.pembayaran.nota', compact('pembayaran'));
+}
+
+public function update(Request $request, Pembayaran $pembayaran)
     {
         $this->authorize('update', $pembayaran);
 
@@ -84,27 +106,21 @@ class PembayaranController extends Controller
         return redirect()->route('user-pembayaran.index')->with('success', 'Pembayaran berhasil diperbarui.');
     }
 
-    // Hapus pembayaran
+
+    // HAPUS PEMBAYARAN
     public function destroy(Pembayaran $pembayaran)
     {
-        $this->authorize('delete', $pembayaran);
+        if ($pembayaran->user_id !== auth()->id()) {
+            abort(403);
+        }
+
         $pembayaran->delete();
-        return redirect()->route('user-pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
+
+        return redirect()
+            ->route('user-pembayaran.index')
+            ->with('success', 'Pembayaran berhasil dihapus.');
     }
 
-    public function nota(Pembayaran $pembayaran)
-{
-    // pastikan milik user
-    if ($pembayaran->user_id !== auth()->id()) {
-        abort(403);
-    }
 
-    // pastikan sudah diterima
-    if ($pembayaran->status !== 'diterima') {
-        abort(404);
-    }
-
-    return view('user.pembayaran.nota', compact('pembayaran'));
-}
-
+    
 }

@@ -33,10 +33,7 @@
     @include('admin.layouts.sidebar')
 
     <div class="body-wrapper">
-
-        <!-- HEADER -->
-        @include('admin.layouts.header')
-
+        
         <!-- CONTENT -->
         <div class="container-fluid">
             @yield('content')

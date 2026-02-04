@@ -46,10 +46,7 @@ class User extends Authenticatable
     /**
      * Relasi User ke Chat (1 User bisa punya banyak riwayat chat)
      */
-    public function chats()
-    {
-        return $this->hasMany(Chat::class, 'user_id');
-    }
+    
 
     /**
      * Relasi User ke AdminProfile (Hanya jika role-nya admin)
@@ -57,5 +54,10 @@ class User extends Authenticatable
     public function adminProfile()
     {
         return $this->hasOne(AdminProfile::class, 'user_id');
+    }
+
+    public function chat()
+    {
+        return $this->hasMany(Chat::class, 'user_id');
     }
 }

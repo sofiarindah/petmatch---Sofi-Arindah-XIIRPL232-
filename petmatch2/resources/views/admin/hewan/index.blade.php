@@ -125,7 +125,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="card-title-custom">Data Hewan</h5>
                 <a href="{{ route('admin.hewan.create') }}" class="btn btn-add-hewan shadow-sm">
-                    Tambah Data Hewan
+                    + Tambah Data Hewan
                 </a>
             </div>
 

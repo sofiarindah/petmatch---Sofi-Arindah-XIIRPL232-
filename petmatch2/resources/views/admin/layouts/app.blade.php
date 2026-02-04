@@ -6,14 +6,11 @@
 
     <title>PetMatch - {{ $title ?? 'Dashboard' }}</title>
 
-    <!-- FAVICON ONLINE (DOG & CAT) -->
     <link rel="shortcut icon" type="image/png"
           href="https://cdn-icons-png.flaticon.com/512/194/194279.png">
 
-    <!-- TEMPLATE CSS (LOCAL) -->
     <link rel="stylesheet" href="{{ asset('template-admin/src/assets/css/styles.min.css') }}">
 
-    <!-- DATATABLE CSS CDN -->
     <link rel="stylesheet"
           href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css">
 
@@ -29,50 +26,44 @@
      data-sidebar-position="fixed"
      data-header-position="fixed">
 
-    <!-- SIDEBAR -->
     @include('admin.layouts.sidebar')
 
     <div class="body-wrapper">
 
-        <!-- HEADER -->
-       
-
-        <!-- CONTENT -->
-        {{-- <div class="container-fluid">
-        </div> --}}
         @yield('content')
 
     </div>
 </div>
 
-<!-- ================= JAVASCRIPT ================= -->
-
-<!-- JQUERY CDN -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<!-- BOOTSTRAP CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- TEMPLATE JS (LOCAL – WAJIB) -->
 <script src="{{ asset('template-admin/src/assets/js/sidebarmenu.js') }}"></script>
 <script src="{{ asset('template-admin/src/assets/js/app.min.js') }}"></script>
 <script src="{{ asset('template-admin/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>
 
-<!-- DATATABLE JS CDN -->
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
 
-<!-- SWEETALERT CDN -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-@yield('js')
+@stack('scripts')
 
-<!-- SWEETALERT SESSION -->
 <script>
-@if (session('status'))
+@if (session('success'))
     swal({
-        title: "{{ session('title') }}",
-        text: "{{ session('message') }}",
-        icon: "{{ session('status') }}",
+        title: "Berhasil",
+        text: "{{ session('success') }}",
+        icon: "success",
+        button: "OK"
+    });
+@endif
+
+@if (session('error'))
+    swal({
+        title: "Gagal",
+        text: "{{ session('error') }}",
+        icon: "error",
         button: "OK"
     });
 @endif

@@ -22,10 +22,9 @@
         left: 0;
         width: 100%;
         height: 8px;
-        background: #967e76;
+        background: #967e76; 
     }
 
-    /* Tombol Kembali Menjadi Button */
     .btn-back {
         display: inline-flex;
         align-items: center;
@@ -101,7 +100,6 @@
     }
 
     .stamp-success { background: #ebfbee; color: #2b8a3e; border: 1px solid #d3f9d8; }
-    .stamp-warning { background: #fff9db; color: #f59f00; border: 1px solid #fff3bf; }
 
     .btn-print {
         background: #967e76 !important;
@@ -120,7 +118,7 @@
 
     /* Style Khusus Cetak/Print */
     @media print {
-        .sidebar, .btn-print, .btn-back, .navbar {
+        .sidebar, .btn-print, .btn-back, .navbar, .btn-link {
             display: none !important;
         }
         .content {
@@ -135,51 +133,62 @@
             border: 1px solid #eee !important;
             margin: 0 auto !important;
             max-width: 100% !important;
+            padding: 20px !important;
         }
     }
 </style>
 
 <div class="container py-4">
-    {{-- Tombol Kembali Berbentuk Button --}}
-    <a href="{{ route('user-pembayaran.index') }}" class="btn btn-back">
+    <a href="{{ route('user.permintaan.index') }}" class="btn btn-back">
         Kembali
     </a>
 
     <div class="nota-card">
         <div class="nota-header">
-            <img src="https://cdn-icons-png.flaticon.com/512/194/194279.png" width="50" class="mb-2">
-            <h4>Nota Pembayaran</h4>
-            <p>Terima kasih telah mendukung <strong>PetMatch</strong></p>
+            <img src="https://cdn-icons-png.flaticon.com/512/194/194279.png" width="60" class="mb-3">
+            <h4>Nota Adopsi</h4>
+            <p>Selamat atas anggota keluarga baru Anda di <strong>PetMatch</strong></p>
         </div>
 
         <table class="nota-table">
             <tr>
-                <th>KODE TRANSAKSI</th>
-                <td>#{{ $pembayaran->kode_pembayaran }}</td>
+                <th>ID PERMINTAAN</th>
+                <td>#AD-{{ $permintaan->id }}</td>
             </tr>
             <tr>
-                <th>TANGGAL</th>
-                <td>{{ $pembayaran->created_at->format('d M Y, H:i') }} WIB</td>
+                <th>NAMA PENGADOPSI</th>
+                <td>{{ $permintaan->user->name }}</td>
             </tr>
             <tr>
-                <th>JUMLAH</th>
-                <td style="font-size: 20px; color: #634832;">Rp {{ number_format($pembayaran->jumlah,0,',','.') }}</td>
+                <th>NAMA HEWAN</th>
+                <td style="color: #634832;">{{ $permintaan->hewan->nama }}</td>
+            </tr>
+            <tr>
+                <th>JENIS HEWAN</th>
+                <td>{{ $permintaan->hewan->jenis }}</td>
+            </tr>
+            <tr>
+                <th>TANGGAL DISETUJUI</th>
+                <td>{{ $permintaan->updated_at->format('d M Y') }}</td>
             </tr>
             <tr>
                 <th>STATUS</th>
                 <td>
-                    <span class="status-stamp {{ $pembayaran->status == 'diterima' ? 'stamp-success' : 'stamp-warning' }}">
-                        {{ strtoupper($pembayaran->status) }}
+                    <span class="status-stamp stamp-success">
+                        DITERIMA
                     </span>
                 </td>
             </tr>
         </table>
 
         <div class="text-center mt-4">
-            <p class="small text-muted mb-4">Nota ini dihasilkan secara otomatis dan sah sebagai bukti pembayaran yang dilakukan di platform PetMatch.</p>
+            <p class="small text-muted mb-4">
+                Nota ini merupakan bukti resmi bahwa proses adopsi telah disetujui. 
+                Silakan simpan nota ini sebagai referensi di masa mendatang.
+            </p>
             
             <button onclick="window.print()" class="btn btn-print">
-                <i class="bi bi-printer me-2"></i> Cetak Nota Sekarang
+                <i class="bi bi-printer me-2"></i> Cetak Bukti Adopsi
             </button>
         </div>
     </div>

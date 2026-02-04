@@ -7,17 +7,14 @@ use App\Models\Pelanggan;
 use App\Models\Permintaan;
 use App\Models\Hewan;
 use App\Models\User;
-use App\Models\Chat;
 
 class AdminDashboardController extends Controller
 {
     public function index()
     {
-        // dd(auth()->user());
         return view('admin.dashboard.index', [
             'totalHewan'      => Hewan::count(),
             'totalPermintaan' => Permintaan::count(),
-            'totalPesan'      => Chat::count(),
         ]);
     }
 }

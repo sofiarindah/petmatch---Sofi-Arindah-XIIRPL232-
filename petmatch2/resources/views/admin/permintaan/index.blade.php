@@ -118,7 +118,7 @@
                         <th>Pemohon</th>
                         <th>Hewan</th>
                         <th>Identitas</th>
-                        <th>Alamat & Alasan</th>
+                        <th>Alamat</th>
                         <th>Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>

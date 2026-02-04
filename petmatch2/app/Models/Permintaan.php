@@ -17,14 +17,14 @@ protected $fillable = [
     'status'
 ];
 
-public function user()
-{
-    return $this->belongsTo(User::class, 'user_id');
-}
-
 public function hewan()
 {
     return $this->belongsTo(Hewan::class);
+}
+
+public function user()
+{
+    return $this->belongsTo(User::class);
 }
 
 

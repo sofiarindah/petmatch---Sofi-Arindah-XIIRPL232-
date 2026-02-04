@@ -202,12 +202,6 @@
                     </div>
                 </div>
 
-                <form action="{{ route('user.permintaan.store') }}" method="POST">
-    @csrf
-    <input type="hidden" name="hewan_id" value="{{ $detail->id }}">
-    <button type="submit" class="btn btn-adopt">
-        <i class="bi bi-heart-fill me-2"></i> Ajukan Adopsi
-    </button>
 </form>
             </div>
         </div>

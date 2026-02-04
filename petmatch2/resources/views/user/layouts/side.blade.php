@@ -154,15 +154,10 @@
             </a>
 
             <a href="{{ route('user.permintaan.index') }}" class="{{ Request::is('user/permintaan*') ? 'active' : '' }}">
-                <i class="bi bi-heart-pulse-fill"></i> <span>Permintaan</span>
-            </a>
-
-            <a href="{{ route('messages.index') }}" class="{{ Request::is('messages*') ? 'active' : '' }}">
-                <i class="bi bi-chat-square-heart-fill"></i> <span>Pesan Chat</span>
-            </a>
+                <i class="bi bi-envelope-paper-heart-fill"></i> <span>Permintaan</span>
 
             <a href="{{ route('user-pembayaran.index') }}" class="{{ Request::is('user/pembayaran*') ? 'active' : '' }}">
-                <i class="bi bi-wallet2"></i> <span>List Pembayaran</span>
+                <i class="bi bi-wallet2"></i> <span>Pembayaran</span>
             </a>
 
         </div>

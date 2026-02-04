@@ -27,4 +27,11 @@ class DetailHewan extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function detail(Pembayaran $pembayaran)
+{
+    $pembayaran->load(['hewan', 'user']);
+
+    return view('user.pembayaran.detail', compact('pembayaran'));
+}
+
 }

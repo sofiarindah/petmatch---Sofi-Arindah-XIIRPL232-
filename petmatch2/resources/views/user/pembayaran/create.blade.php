@@ -112,34 +112,45 @@
                 <p class="text-muted small">Silakan isi detail pembayaran Anda di bawah ini</p>
             </div>
 
-            <form action="{{ route('user-pembayaran.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                
-                <div class="mb-4">
-                    <label class="form-label">Jumlah Pembayaran</label>
-                    <div class="input-group">
-                        <span class="input-group-text">Rp</span>
-                        <input type="number" name="jumlah" class="form-control custom-input" placeholder="Max: 100000" required>
-                    </div>
-                </div>
+<form action="{{ route('user-pembayaran.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
 
-                <div class="mb-4">
-                    <label class="form-label">Bukti Pembayaran</label>
-                    <input type="file" name="bukti" class="form-control custom-input">
-                    <span class="file-help">Format: JPG, PNG, atau PDF (Maks. 2MB). Kosongkan jika belum ada.</span>
-                </div>
+    <!-- PILIH PERMINTAAN -->
+    <div class="mb-4">
+        <label class="form-label">Pilih Permintaan</label>
+        <select name="permintaan_id" class="form-control custom-input" required>
+            <option value="">Pilih</option>
+            @foreach ($permintaans as $permintaan)
+                <option value="{{ $permintaan->id }}">
+                    {{ $permintaan->hewan->nama }} 
+                    ({{ $permintaan->created_at->format('d M Y') }})
+                </option>
+            @endforeach
+        </select>
+    </div>
 
-                <div class="mb-4 text-center p-3 rounded-4" style="background: #fffaf7; border: 1px dashed #dbc1ac;">
-                    <p class="mb-0 small text-muted">
-                        <i class="bi bi-shield-check me-1 text-success"></i> 
-                        Pembayaran akan diverifikasi oleh admin dalam 1x24 jam.
-                    </p>
-                </div>
+    <!-- JUMLAH PEMBAYARAN -->
+    <div class="mb-4">
+        <label class="form-label">Jumlah Pembayaran</label>
+        <div class="input-group">
+            <span class="input-group-text">Rp</span>
+            <input type="number" name="jumlah" class="form-control custom-input" placeholder="Minimal Rp 100.000" required>
+        </div>
+    </div>
 
-                <button type="submit" class="btn btn-save">
-                    Kirim Konfirmasi
-                </button>
-            </form>
+    <!-- BUKTI PEMBAYARAN -->
+    <div class="mb-4">
+        <label class="form-label">Bukti Penerimaan Adopsi</label>
+        <input type="file" name="bukti" class="form-control custom-input">
+        <span class="file-help">Format: JPG, PNG, PDF (Maks. 2MB). Kosongkan jika belum ada.</span>
+    </div>
+
+    <!-- TOMBOL SUBMIT -->
+    <button type="submit" class="btn btn-save">
+        Kirim Konfirmasi
+    </button>
+</form>
+
         </div>
     </div>
 </div>

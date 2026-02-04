@@ -120,8 +120,8 @@
     <div class="sidebar">
 
         <div class="sidebar-logo">
-            <img src="https://cdn-icons-png.flaticon.com/512/194/194279.png" alt="logo">
-            <h3>PetMatch</h3>
+            <img src="{{ asset('template-admin/images/icon_kucing.jpeg') }}" alt="logo">
+            <h3>Adopsi Hewan</h3>
         </div>
 
         <nav>
@@ -129,6 +129,12 @@
                 class="{{ Request::is('admin/dashboard') || Request::is('user/dashboard') ? 'active' : '' }}">
                 <i class="bi bi-grid-1x2-fill"></i> Beranda
             </a>
+
+            <a href="{{ route('admin.laporan-keuangan') }}"
+       class="nav-link {{ request()->routeIs('admin.laporan-keuangan') ? 'active' : '' }}">
+        <i class="bi bi-cash-stack me-2"></i>
+        <span>Laporan Keuangan</span>
+    </a>
 
             <a href="{{ route('admin.categories.index') }}"
                 class="{{ Request::is('admin/categories*') || Request::is('user/categories*') ? 'active' : '' }}">
@@ -145,9 +151,11 @@
                 <i class="bi bi-envelope-paper-heart-fill"></i> Permintaan
             </a>
 
-            <a href="{{ route('messages.index') }}" class="{{ Request::is('messages*') ? 'active' : '' }}">
-                <i class="bi bi-chat-square-heart-fill"></i> <span>Pesan Chat</span>
-            </a>
+            <a href="{{ route('admin.riwayat.index') }}" 
+   class="{{ Request::is('admin/riwayat*') || Request::is('user/riwayat*') ? 'active' : '' }}">
+    <i class="bi bi-clock-history me-2"></i> 
+    <span class="hide-menu">Riwayat Adopsi</span>
+</a>
 
             <a href="{{ route('admin.pembayaran.index') }}"
                 class="{{ Request::is('admin/pembayaran*') || Request::is('user/pembayaran*') ? 'active' : '' }}">
