@@ -111,21 +111,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($pembayaran as $permintaans)
+                    @forelse($pembayaran as $p)
                     <tr>
                         <td class="fw-bold text-dark">
-                            #{{ $permintaans->kode_pembayaran }}
+                            #{{ $p->kode_pembayaran }}
                         </td>
 
-                        <td>{{ $permintaans->created_at->format('d M Y') }}</td>
+                        <td>{{ $p->created_at->format('d M Y') }}</td>
 
                         <td class="fw-bold" style="color: #634832;">
-                            Rp {{ number_format($permintaans->jumlah,0,',','.') }}
+                            Rp {{ number_format($p->jumlah,0,',','.') }}
                         </td>
 
                         <td>
                             @php
-                                $statusColor = match($permintaans->status) {
+                                $statusColor = match($p->status) {
                                     'diterima' => 'success',
                                     'ditolak' => 'danger',
                                     default => 'warning'
@@ -133,24 +133,24 @@
                             @endphp
 
                             <span class="badge badge-status bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }}">
-                                {{ strtoupper($permintaan->status) }}
+                                {{ strtoupper($p->status) }}
                             </span>
                         </td>
 
                         <td class="text-center">
                             {{-- 🔥 TOMBOL DETAIL (SELALU ADA) --}}
-                            <a href="{{ route('user-pembayaran.detail', $permintaan->id) }}"
+                            <a href="{{ route('user-pembayaran.detail', $p->id) }}"
                                class="btn btn-sm btn-outline-primary btn-detail mb-1">
                                 <i class="bi bi-eye"></i> Detail
                             </a>
 
                             {{-- NOTA HANYA JIKA DITERIMA --}}
-                            @if($permintaan->status === 'diterima')
-                                <a href="{{ route('user-pembayaran.nota', $permintaan->id) }}"
+                            @if($p->status === 'diterima')
+                                <a href="{{ route('user-pembayaran.nota', $p->id) }}"
                                    class="btn btn-sm btn-nota ms-1">
                                     <i class="bi bi-file-earmark-text"></i> Nota
                                 </a>
-                            @elseif($permintaan->status === 'diajukan')
+                            @elseif($p->status === 'diajukan')
                                 <div class="waiting-text mt-1">
                                     <i class="bi bi-clock-history me-1"></i> Menunggu Konfirmasi
                                 </div>
