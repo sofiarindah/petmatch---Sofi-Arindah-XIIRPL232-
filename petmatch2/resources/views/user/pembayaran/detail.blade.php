@@ -55,6 +55,16 @@
         font-weight: 800;
         display: inline-block;
     }
+    .type-badge {
+        padding: 6px 12px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        display: inline-block;
+        border: 1px solid #f3e9e2;
+        color: var(--brown-dark);
+        background: #fff;
+    }
 
     .bg-status-success { background: #ebfbee; color: #2b8a3e; }
     .bg-status-warning { background: #fff9db; color: #f59f00; }
@@ -90,6 +100,12 @@
             <i class="bi bi-dot"></i> {{ strtoupper($pembayaran->status) }}
         </div>
     </div>
+    <div class="mb-3">
+        @php $isDonasi = empty($pembayaran->permintaan_id); @endphp
+        <span class="type-badge">
+            {{ $isDonasi ? 'Donasi' : 'Adopsi' }}
+        </span>
+    </div>
 
     <div class="row g-4">
         {{-- INFO PEMBAYARAN --}}
@@ -102,6 +118,13 @@
                     <tr>
                         <th>Kode</th>
                         <td>#{{ $pembayaran->kode_pembayaran }}</td>
+                    </tr>
+                    <tr>
+                        <th>Jenis</th>
+                        <td>
+                            @php $isDonasi = empty($pembayaran->permintaan_id); @endphp
+                            {{ $isDonasi ? 'Donasi' : 'Adopsi' }}
+                        </td>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -123,7 +146,7 @@
         <div class="col-md-6">
             <div class="card info-card p-4 border-0">
                 <div class="info-header fw-bold">
-                    <i class="bi bi-person-check me-2"></i> Data Pengadopsi
+                    <i class="bi bi-person-check me-2"></i> {{ empty($pembayaran->permintaan_id) ? 'Data Donatur' : 'Data Pengadopsi' }}
                 </div>
                 <table class="info-table w-100">
                     <tr>
@@ -147,6 +170,35 @@
                 </table>
             </div>
         </div>
+
+        {{-- INFO HEWAN --}}
+        @if($pembayaran->permintaan && $pembayaran->permintaan->hewan)
+        <div class="col-12">
+            <div class="card info-card p-4 border-0">
+                <div class="info-header fw-bold">
+                    <i class="bi bi-heart-fill me-2 text-danger"></i> Hewan yang Diadopsi
+                </div>
+                <div class="d-flex align-items-center gap-4">
+                    <img src="{{ asset('photos/' . $pembayaran->permintaan->hewan->foto) }}" 
+                         alt="{{ $pembayaran->permintaan->hewan->nama }}" 
+                         class="rounded-4 shadow-sm" 
+                         style="width: 100px; height: 100px; object-fit: cover;">
+                    
+                    <div>
+                        <h4 class="fw-bold mb-1" style="color: var(--brown-dark);">{{ $pembayaran->permintaan->hewan->nama }}</h4>
+                        <div class="mb-2">
+                            <span class="badge bg-light text-dark border me-1">{{ $pembayaran->permintaan->hewan->jenis }}</span>
+                            <span class="badge bg-light text-dark border me-1">{{ $pembayaran->permintaan->hewan->umur }} Tahun</span>
+                            <span class="badge bg-light text-dark border">{{ $pembayaran->permintaan->hewan->gender }}</span>
+                        </div>
+                        <p class="text-muted small fst-italic mb-0">
+                            "{{ Str::limit($pembayaran->permintaan->hewan->deskripsi, 150) }}"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
     <div class="mt-5">
         <a href="{{ route('user-pembayaran.index') }}" class="btn-back-custom">

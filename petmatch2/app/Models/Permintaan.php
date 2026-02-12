@@ -14,6 +14,7 @@ protected $fillable = [
     'pekerjaan',
     'alamat',
     'alasan',
+    'catatan',
     'status'
 ];
 

@@ -9,9 +9,9 @@ use App\Http\Controllers\Admin\PermintaanController as AdminPermintaanController
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\PermintaanController as UserPermintaan;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\Admin\PembayaranController as AdminPembayaran;
-use App\Http\Controllers\Messages\MessageController;
 use App\Http\Controllers\User\DetailController;
+use App\Http\Controllers\User\ChatController as UserChatController;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\User\PembayaranController as UserPembayaran;
 use App\Http\Controllers\Admin\RiwayatController;
 use App\Http\Controllers\Admin\LaporanKeuanganController;
@@ -37,12 +37,11 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])
 Route::post('/login', [LoginController::class, 'login'])
     ->name('login.process');
 
-// logout
-Route::post('/logout', function () {
+Route::match(['get','post'],'/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
-    return redirect('register'); 
+    return redirect()->route('register');
 })->name('logout');
 
 // ================= ADMIN =================
@@ -72,16 +71,16 @@ Route::middleware('auth')
             ->name('permintaan.tolak');
 
         // Pembayaran 
-        Route::get('/pembayaran', [AdminPembayaran::class, 'index'])
+        Route::get('/pembayaran', [\App\Http\Controllers\Admin\PembayaranController::class, 'index'])
             ->name('pembayaran.index');
 
-        Route::get('/pembayaran/{id}', [AdminPembayaran::class, 'show'])
+        Route::get('/pembayaran/{id}', [\App\Http\Controllers\Admin\PembayaranController::class, 'show'])
             ->name('pembayaran.show');
 
-        Route::post('/pembayaran/{id}/terima', [AdminPembayaran::class, 'terima'])
+        Route::post('/pembayaran/{id}/terima', [\App\Http\Controllers\Admin\PembayaranController::class, 'terima'])
             ->name('pembayaran.terima');
 
-        Route::post('/pembayaran/{id}/tolak', [AdminPembayaran::class, 'tolak'])
+        Route::post('/pembayaran/{id}/tolak', [\App\Http\Controllers\Admin\PembayaranController::class, 'tolak'])
             ->name('pembayaran.tolak');
 
         //Riwayat
@@ -92,6 +91,11 @@ Route::middleware('auth')
                 Route::get('/laporan-keuangan', [LaporanKeuanganController::class, 'index'])
                     ->name('laporan-keuangan');
 
+        // Messages
+        Route::get('/chat', [AdminChatController::class, 'index'])->name('chat.index');
+        Route::get('/chat/{id}', [AdminChatController::class, 'show'])->name('chat.show');
+        Route::post('/chat/{id}', [AdminChatController::class, 'store'])->name('chat.store');
+
     });
 
 // ================= USER =================
@@ -99,6 +103,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/user', [UserController::class, 'index'])
         ->name('user.index');
+    
+    // List Semua Hewan
+    Route::get('/user/hewan', [UserController::class, 'hewan'])
+        ->name('user.hewan');
 
     // Permintaan USER
     Route::prefix('permintaan')->name('user.permintaan.')->group(function () {
@@ -128,10 +136,19 @@ Route::middleware('auth')->group(function () {
     ->name('user-pembayaran.nota');
     Route::get('user-pembayaran/{pembayaran}/detail',[UserPembayaran::class, 'detail'])
         ->name('user-pembayaran.detail');
+    Route::get('user-pembayaran/{pembayaran}/bukti-transfer',[UserPembayaran::class, 'buktiTransfer'])
+        ->name('user-pembayaran.bukti-transfer');
 
     // Detail
     Route::get('/detail/{id}', [DetailController::class, 'index'])
         ->name('user.detail');
 
+    // Chat
+    Route::get('/chat', [UserChatController::class, 'index'])->name('user.chat.index');
+    Route::post('/chat', [UserChatController::class, 'store'])->name('user.chat.store');
 
+
+});
+Route::middleware('auth')->group(function () {
+    Route::resource('user', UserController::class);
 });

@@ -10,4 +10,9 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = ['nama', 'image'];
+
+    public function hewans()
+    {
+        return $this->hasMany(Hewan::class);
+    }
 }

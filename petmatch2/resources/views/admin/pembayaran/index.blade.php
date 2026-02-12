@@ -134,6 +134,9 @@
                             <th>User</th>
                             <th>Kode Transaksi</th>
                             <th>Jumlah</th>
+                            <th>Metode</th>
+                            <th>Jenis</th>
+                            <th>Bukti</th>
                             <th>Status</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -155,6 +158,29 @@
                             <td><code class="transaction-code">{{ $p->kode_pembayaran }}</code></td>
                             <td>
                                 <span class="fw-bold" style="color: #2d6a4f;">Rp {{ number_format($p->jumlah, 0, ',', '.') }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    {{ ucfirst($p->metode_pembayaran ?? '-') }}
+                                </span>
+                            </td>
+                            <td>
+                                @if(!empty($p->permintaan_id))
+                                    <span class="badge bg-primary bg-opacity-10 text-primary">Adopsi</span>
+                                @else
+                                    <span class="badge bg-info bg-opacity-10 text-info">Donasi</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($p->metode_pembayaran == 'transfer' && $p->bukti)
+                                    <a href="{{ asset('storage/'.$p->bukti) }}" target="_blank" class="btn btn-sm btn-outline-info" style="font-size: 10px;">
+                                        <i class="bi bi-image"></i> Lihat
+                                    </a>
+                                @elseif($p->metode_pembayaran == 'tunai')
+                                    <span class="text-muted small">-</span>
+                                @else
+                                    <span class="text-danger small">Tidak ada</span>
+                                @endif
                             </td>
                             <td>
                                 <span class="badge badge-status bg-{{ 

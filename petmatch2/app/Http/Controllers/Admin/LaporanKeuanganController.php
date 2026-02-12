@@ -22,6 +22,15 @@ class LaporanKeuanganController extends Controller
             ]);
         }
 
+        // filter jenis (donasi/adopsi)
+        if ($request->filled('jenis')) {
+            if ($request->jenis === 'donasi') {
+                $query->whereNull('permintaan_id');
+            } elseif ($request->jenis === 'adopsi') {
+                $query->whereNotNull('permintaan_id');
+            }
+        }
+
         $pembayarans = $query->get();
 
         $totalMasuk = $pembayarans->sum('jumlah');

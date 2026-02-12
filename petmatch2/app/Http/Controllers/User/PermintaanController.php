@@ -34,6 +34,7 @@ class PermintaanController extends Controller
             'no_hp' => 'required|string',
             'alamat' => 'required|string',
             'pekerjaan' => 'required|string',
+            'alasan' => 'required|string',
         ]);
 
         Permintaan::create([
@@ -43,6 +44,8 @@ class PermintaanController extends Controller
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
             'pekerjaan' => $request->pekerjaan,
+            'alasan' => $request->alasan,
+            'catatan' => $request->alasan,
             'status' => 'diajukan'
         ]);
 

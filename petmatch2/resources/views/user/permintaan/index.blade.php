@@ -102,7 +102,9 @@
                     <select name="hewan_id" class="form-select" required>
                         <option value="">Pilih Hewan</option>
                         @foreach($hewans as $h)
-                            <option value="{{ $h->id }}">{{ $h->nama }}</option>
+                            <option value="{{ $h->id }}" {{ request('hewan_id') == $h->id ? 'selected' : '' }}>
+                                {{ $h->nama }}
+                            </option>
                         @endforeach
                     </select>
                 </div>

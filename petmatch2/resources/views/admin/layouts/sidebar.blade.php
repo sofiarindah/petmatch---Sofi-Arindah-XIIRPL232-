@@ -89,13 +89,9 @@
             opacity: 1;
         }
 
-        .logout-link {
-            color: #d63384 !important; /* Warna pink kecokelatan untuk logout */
-        }
-
-        .logout-link:hover {
-            background: #fff0f3 !important;
-        }
+        .logout-link { color: #dc3545 !important; }
+        .logout-link i { color: #dc3545 !important; }
+        .logout-link:hover { background: #fff5f5 !important; }
 
         /* CONTENT AREA */
         .content {
@@ -162,16 +158,12 @@
                 <i class="bi bi-credit-card-2-back-fill"></i> Pembayaran
             </a>
 
-            <hr>
-
-            <a href="{{ route('logout') }}" class="logout-link"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="bi bi-box-arrow-right"></i> Keluar
+            <a href="{{ route('admin.chat.index') }}"
+                class="{{ Request::is('admin/chat*') ? 'active' : '' }}">
+                <i class="bi bi-chat-dots-fill"></i> Chat User
             </a>
 
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-            </form>
+            <hr>
         </nav>
 
     </div>

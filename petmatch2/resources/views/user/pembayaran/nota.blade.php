@@ -157,9 +157,21 @@
                 <th>KODE TRANSAKSI</th>
                 <td>#{{ $pembayaran->kode_pembayaran }}</td>
             </tr>
+            @if($pembayaran->permintaan && $pembayaran->permintaan->hewan)
+            <tr>
+                <th>HEWAN ADOPSI</th>
+                <td>
+                    <span>{{ $pembayaran->permintaan->hewan->nama }}</span>
+                </td>
+            </tr>
+            @endif
             <tr>
                 <th>TANGGAL</th>
                 <td>{{ $pembayaran->created_at->format('d M Y, H:i') }} WIB</td>
+            </tr>
+            <tr>
+                <th>METODE PEMBAYARAN</th>
+                <td>{{ ucfirst($pembayaran->metode_pembayaran ?? '-') }}</td>
             </tr>
             <tr>
                 <th>JUMLAH</th>

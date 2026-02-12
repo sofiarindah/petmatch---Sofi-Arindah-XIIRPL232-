@@ -10,6 +10,7 @@ class Hewan extends Model
 
     protected $fillable = [
         'nama',
+        'category_id',
         'jenis',
         'umur',
         'gender',
@@ -18,6 +19,11 @@ class Hewan extends Model
         'kondisi',
         'status',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function permintaans()
     {

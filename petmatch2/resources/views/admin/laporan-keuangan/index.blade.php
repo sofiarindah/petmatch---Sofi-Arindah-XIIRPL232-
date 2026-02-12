@@ -99,11 +99,14 @@
                 </h2>
             </div>
         </div>
+        <div class="mt-3 text-white text-opacity-75 small">
+            Diperbarui: {{ now()->format('d M Y, H:i') }} WIB
+        </div>
     </div>
 
-    {{-- FILTER TANGGAL --}}
+    {{-- FILTER TANGGAL & JENIS --}}
     <div class="card filter-card p-3 mb-4 border-0 shadow-sm">
-        <form class="row g-3 align-items-end">
+        <form class="row g-3 align-items-end" method="GET" action="{{ route('admin.laporan-keuangan') }}">
             <div class="col-md-4">
                 <label class="small fw-bold text-muted mb-2">Dari Tanggal</label>
                 <input type="date" name="from" class="form-control" value="{{ request('from') }}">
@@ -113,7 +116,15 @@
                 <input type="date" name="to" class="form-control" value="{{ request('to') }}">
             </div>
             <div class="col-md-4">
-                <button class="btn btn-filter w-100 py-2">
+                <label class="small fw-bold text-muted mb-2">Jenis Transaksi</label>
+                <select name="jenis" class="form-control">
+                    <option value="">Semua Jenis</option>
+                    <option value="donasi" {{ request('jenis') === 'donasi' ? 'selected' : '' }}>Donasi</option>
+                    <option value="adopsi" {{ request('jenis') === 'adopsi' ? 'selected' : '' }}>Adopsi</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3">
+                <button class="btn btn-filter w-100 py-2" type="submit">
                     <i class="bi bi-funnel me-1"></i> Terapkan Filter
                 </button>
             </div>
@@ -128,8 +139,11 @@
                     <tr>
                         <th class="text-center">No</th>
                         <th>Tanggal</th>
+                        <th>Jam</th>
                         <th>Kode Transaksi</th>
                         <th>Nama Pengguna</th>
+                        <th>Metode</th>
+                        <th>Jenis</th>
                         <th class="text-end">Jumlah</th>
                     </tr>
                 </thead>
@@ -138,8 +152,21 @@
                         <tr>
                             <td class="text-center text-muted">{{ $loop->iteration }}</td>
                             <td>{{ $item->created_at->format('d M Y') }}</td>
+                            <td>{{ now()->format('H:i') }} WIB</td>
                             <td><span class="badge bg-light text-dark border">#{{ $item->kode_pembayaran }}</span></td>
                             <td class="fw-semibold">{{ $item->user->name }}</td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    {{ ucfirst($item->metode_pembayaran ?? '-') }}
+                                </span>
+                            </td>
+                            <td>
+                                @if(!empty($item->permintaan_id))
+                                    <span class="badge bg-primary bg-opacity-10 text-primary">Adopsi</span>
+                                @else
+                                    <span class="badge bg-info bg-opacity-10 text-info">Donasi</span>
+                                @endif
+                            </td>
                             <td class="text-end text-amount">
                                 Rp {{ number_format($item->jumlah,0,',','.') }}
                             </td>

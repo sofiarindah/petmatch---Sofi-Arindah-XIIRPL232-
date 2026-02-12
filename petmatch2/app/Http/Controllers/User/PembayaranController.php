@@ -34,32 +34,44 @@ class PembayaranController extends Controller
 
     // SIMPAN PEMBAYARAN
     public function store(Request $request)
-{
-    $request->validate([
-    'permintaan_id' => 'required|exists:permintaans,id',
-    'jumlah'        => 'required|integer',
-    'bukti'         => 'nullable|image|max:2048',
-]);
+    {
+        $isDonation = $request->input('jenis') === 'donasi';
 
+        $rules = [
+            'metode_pembayaran' => 'required|in:tunai,transfer',
+            'jumlah'            => 'required|integer|min:100000',
+            'bukti'             => 'required_if:metode_pembayaran,transfer|mimes:jpg,jpeg,png,pdf|max:2048',
+        ];
+        if (!$isDonation) {
+            $rules['permintaan_id'] = 'required|exists:permintaans,id';
+        }
+        $request->validate($rules);
 
-    $buktiPath = null;
-    if ($request->hasFile('bukti')) {
-        $buktiPath = $request->file('bukti')->store('bukti_pembayaran', 'public');
+        $buktiPath = null;
+        if ($request->hasFile('bukti')) {
+            $buktiPath = $request->file('bukti')->store('bukti_pembayaran', 'public');
+        }
+
+        $data = [
+            'user_id'           => auth()->id(),
+            'kode_pembayaran'   => 'PAY-' . strtoupper(Str::random(8)),
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'jumlah'            => $request->jumlah,
+            'status'            => 'diajukan',
+        ];
+        if ($buktiPath) {
+            $data['bukti'] = $buktiPath;
+        }
+        if (!$isDonation) {
+            $data['permintaan_id'] = $request->permintaan_id;
+        }
+
+        Pembayaran::create($data);
+
+        return redirect()
+            ->route('user-pembayaran.index')
+            ->with('success', 'Pembayaran berhasil dikirim');
     }
-
-    Pembayaran::create([
-    'user_id'       => auth()->id(),
-    'kode_pembayaran' => 'PAY-' . strtoupper(Str::random(8)),
-    'jumlah'        => $request->jumlah,
-    'bukti'         => $buktiPath,
-    'status'        => 'diajukan',
-]);
-
-
-    return redirect()
-        ->route('user-pembayaran.index')
-        ->with('success', 'Pembayaran berhasil dikirim');
-}
 
 
     // DETAIL PEMBAYARAN
@@ -83,12 +95,29 @@ public function detail(Pembayaran $pembayaran)
     return view('user.pembayaran.nota', compact('pembayaran'));
 }
 
+    // BUKTI TRANSFER (PRINTABLE)
+    public function buktiTransfer(Pembayaran $pembayaran)
+    {
+        if ($pembayaran->user_id !== auth()->id()) {
+            abort(403);
+        }
+        if ($pembayaran->metode_pembayaran !== 'transfer') {
+            return redirect()
+                ->route('user-pembayaran.detail', $pembayaran->id)
+                ->with('error', 'Bukti transfer hanya tersedia untuk metode transfer.');
+        }
+
+        $pembayaran->load('permintaan.hewan', 'user');
+
+        return view('user.pembayaran.bukti-transfer', compact('pembayaran'));
+    }
+
 public function update(Request $request, Pembayaran $pembayaran)
     {
         $this->authorize('update', $pembayaran);
 
         $request->validate([
-            'jumlah' => 'required|integer',
+            'jumlah' => 'required|integer|min:100000',
             'bukti' => 'nullable|image|max:2048',
             'status' => 'required|in:diajukan,diterima,ditolak',
         ]);

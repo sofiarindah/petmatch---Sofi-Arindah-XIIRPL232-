@@ -118,7 +118,9 @@
                         <th>Pemohon</th>
                         <th>Hewan</th>
                         <th>Identitas</th>
+                        <th>Pekerjaan</th>
                         <th>Alamat</th>
+                        <th>Alasan</th>
                         <th>Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -139,9 +141,19 @@
                             </div>
                         </td>
                         <td>
+                            <div style="font-size: 0.85rem; max-width: 180px;">
+                                <span class="text-dark">{{ Str::limit($p->pekerjaan, 40) }}</span>
+                            </div>
+                        </td>
+                        <td>
                             <div style="font-size: 0.8rem; max-width: 250px;">
-                                <span class="text-dark">{{ Str::limit($p->alamat, 50) }}</span><br>
-                                <span class="text-muted italic">"{{ Str::limit($p->alasan, 50) }}"</span>
+                                <span class="text-dark">{{ Str::limit($p->alamat, 50) }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.8rem; max-width: 280px;">
+                                @php($alasan = trim($p->catatan ?? $p->alasan ?? ''))
+                                <span class="text-muted">{{ $alasan !== '' ? Str::limit($alasan, 120) : '-' }}</span>
                             </div>
                         </td>
                         <td>
@@ -155,7 +167,7 @@
                         </td>
                         <td class="text-center">
                             @if($p->status == 'diajukan')
-                                <div class="d-flex gap-2 justify-content-center">
+                                <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <form method="POST" action="{{ route('admin.permintaan.terima', $p->id) }}">
                                         @csrf
                                         <button class="btn btn-milk-tea">Terima</button>
@@ -172,7 +184,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">Belum ada permintaan masuk.</td>
+                        <td colspan="8" class="text-center py-5 text-muted">Belum ada permintaan masuk.</td>
                     </tr>
                     @endforelse
                 </tbody>

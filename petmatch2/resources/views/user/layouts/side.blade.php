@@ -71,7 +71,7 @@
             display: block;
         }
 
-        .sidebar a, .logout-btn {
+        .sidebar a {
             display: flex;
             align-items: center;
             padding: 14px 18px;
@@ -112,9 +112,8 @@
             padding-top: 20px;
         }
 
-        .logout-btn {
-            color: #dc3545; /* Warna merah untuk logout */
-        }
+        .logout-btn { color: #dc3545 !important; }
+        .logout-btn i { color: #dc3545 !important; }
 
         .logout-btn:hover {
             background: #fff5f5;
@@ -149,26 +148,32 @@
         <div class="nav-menu">
             <span class="nav-label">Main Menu</span>
             
-            <a href="{{ route('user.index') }}" class="{{ Request::is('user/dashboard*') ? 'active' : '' }}">
+            <a href="{{ route('user.index') }}" class="{{ Request::is('user') || Request::is('user/dashboard*') ? 'active' : '' }}">
                 <i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span>
+            </a>
+
+            <a href="{{ route('user.hewan') }}" class="{{ Request::is('user/hewan*') ? 'active' : '' }}">
+                <i class="bi bi-heart-fill"></i> <span>Adopsi Hewan</span>
             </a>
 
             <a href="{{ route('user.permintaan.index') }}" class="{{ Request::is('user/permintaan*') ? 'active' : '' }}">
                 <i class="bi bi-envelope-paper-heart-fill"></i> <span>Permintaan</span>
+            </a>
 
-            <a href="{{ route('user-pembayaran.index') }}" class="{{ Request::is('user/pembayaran*') ? 'active' : '' }}">
+            <a href="{{ route('user-pembayaran.index') }}" class="{{ Request::is('user-pembayaran*') ? 'active' : '' }}">
                 <i class="bi bi-wallet2"></i> <span>Pembayaran</span>
+            </a>
+
+            <a href="{{ route('user.chat.index') }}" class="{{ Request::is('user/chat*') ? 'active' : '' }}">
+                <i class="bi bi-chat-dots-fill"></i> <span>Chat Admin</span>
             </a>
 
         </div>
 
         <div class="sidebar-footer">
-            <form action="{{ route('logout') }}" method="POST" id="logout-form">
-                @csrf
-                <button type="submit" class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i> <span>Keluar Akun</span>
-                </button>
-            </form>
+            <a href="{{ route('logout') }}" class="logout-btn">
+                <i class="bi bi-box-arrow-right"></i> <span>Keluar</span>
+            </a>
         </div>
 
     </div>

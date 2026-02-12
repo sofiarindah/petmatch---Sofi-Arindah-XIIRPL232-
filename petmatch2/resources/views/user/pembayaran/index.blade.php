@@ -104,8 +104,11 @@
                 <thead>
                     <tr>
                         <th>Kode</th>
+                        <th>Hewan</th>
                         <th>Tanggal</th>
                         <th>Jumlah</th>
+                        <th>Metode</th>
+                        <th>Jenis</th>
                         <th>Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -117,10 +120,33 @@
                             #{{ $p->kode_pembayaran }}
                         </td>
 
+                        <td>
+                            @if($p->permintaan && $p->permintaan->hewan)
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="fw-bold text-dark small">{{ $p->permintaan->hewan->nama }}</span>
+                                </div>
+                            @else
+                                <span class="text-muted small">-</span>
+                            @endif
+                        </td>
+
                         <td>{{ $p->created_at->format('d M Y') }}</td>
 
                         <td class="fw-bold" style="color: #634832;">
                             Rp {{ number_format($p->jumlah,0,',','.') }}
+                        </td>
+
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">
+                                {{ ucfirst($p->metode_pembayaran ?? '-') }}
+                            </span>
+                        </td>
+                        <td>
+                            @if(!empty($p->permintaan_id))
+                                <span class="badge bg-primary bg-opacity-10 text-primary">Adopsi</span>
+                            @else
+                                <span class="badge bg-info bg-opacity-10 text-info">Donasi</span>
+                            @endif
                         </td>
 
                         <td>
@@ -143,6 +169,14 @@
                                class="btn btn-sm btn-outline-primary btn-detail mb-1">
                                 <i class="bi bi-eye"></i> Detail
                             </a>
+
+                            {{-- BUKTI TRANSFER - tampil jika metode transfer --}}
+                            @if($p->metode_pembayaran === 'transfer')
+                                <a href="{{ route('user-pembayaran.bukti-transfer', $p->id) }}"
+                                   class="btn btn-sm btn-outline-secondary btn-detail mb-1">
+                                    <i class="bi bi-receipt"></i> Bukti Transfer
+                                </a>
+                            @endif
 
                             {{-- NOTA HANYA JIKA DITERIMA --}}
                             @if($p->status === 'diterima')

@@ -109,23 +109,40 @@
             <div class="form-header">
                 <i class="bi bi-wallet2"></i>
                 <h4>Konfirmasi Bayar</h4>
-                <p class="text-muted small">Silakan isi detail pembayaran Anda di bawah ini</p>
+            <p class="text-muted small">Silakan isi detail pembayaran Anda di bawah ini</p>
             </div>
 
 <form action="{{ route('user-pembayaran.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-    <!-- PILIH PERMINTAAN -->
+    <!-- JENIS PEMBAYARAN -->
     <div class="mb-4">
+        <label class="form-label">Jenis Pembayaran</label>
+        <select name="jenis" id="jenis" class="form-control custom-input" onchange="toggleJenis()">
+            <option value="adopsi">Adopsi</option>
+            <option value="donasi">Donasi</option>
+        </select>
+    </div>
+
+    <!-- PILIH PERMINTAAN -->
+    <div class="mb-4" id="blok-permintaan">
         <label class="form-label">Pilih Permintaan</label>
-        <select name="permintaan_id" class="form-control custom-input" required>
-            <option value="">Pilih</option>
+        <select name="permintaan_id" id="permintaan_id" class="form-control custom-input">
+            <option value="">Pilih Hewan yang Diadopsi</option>
             @foreach ($permintaans as $permintaan)
                 <option value="{{ $permintaan->id }}">
-                    {{ $permintaan->hewan->nama }} 
-                    ({{ $permintaan->created_at->format('d M Y') }})
+                    {{ $permintaan->hewan->nama }} ({{ $permintaan->created_at->format('d M Y') }})
                 </option>
             @endforeach
+        </select>
+    </div>
+
+    <!-- METODE PEMBAYARAN -->
+    <div class="mb-4">
+        <label class="form-label">Metode Pembayaran</label>
+        <select name="metode_pembayaran" id="metode_pembayaran" class="form-control custom-input" required onchange="toggleMetode()">
+            <option value="transfer">Transfer Bank</option>
+            <option value="tunai">Tunai (Cash)</option>
         </select>
     </div>
 
@@ -134,16 +151,63 @@
         <label class="form-label">Jumlah Pembayaran</label>
         <div class="input-group">
             <span class="input-group-text">Rp</span>
-            <input type="number" name="jumlah" class="form-control custom-input" placeholder="Minimal Rp 100.000" required>
+            <input type="number" name="jumlah" class="form-control custom-input" placeholder="Minimal Rp 100.000" required min="100000" step="1000">
         </div>
     </div>
 
-    <!-- BUKTI PEMBAYARAN -->
-    <div class="mb-4">
-        <label class="form-label">Bukti Penerimaan Adopsi</label>
-        <input type="file" name="bukti" class="form-control custom-input">
-        <span class="file-help">Format: JPG, PNG, PDF (Maks. 2MB). Kosongkan jika belum ada.</span>
+    <!-- INFO TRANSFER -->
+    <div id="info-transfer" class="mb-4 p-3 rounded-4" style="background: #eef7ff; border: 1px dashed #aecce8;">
+        <p class="mb-1 small text-primary fw-bold">Rekening Tujuan:</p>
+        <p class="mb-0 small text-dark">BCA 1234567890 a.n PetMatch</p>
     </div>
+
+    <!-- BUKTI PEMBAYARAN -->
+    <div class="mb-4" id="upload-bukti">
+        <label class="form-label" id="label-bukti">Bukti Penerimaan Adopsi</label>
+        <input type="file" name="bukti" class="form-control custom-input">
+        <span class="file-help">Format: JPG, PNG, PDF (Maks. 2MB). Wajib untuk transfer.</span>
+    </div>
+
+    <script>
+        function toggleJenis() {
+            const jenis = document.getElementById('jenis').value;
+            const blokPermintaan = document.getElementById('blok-permintaan');
+            const permintaanSelect = document.getElementById('permintaan_id');
+            const uploadBukti = document.getElementById('upload-bukti');
+            const labelBukti = document.getElementById('label-bukti');
+
+            if (jenis === 'donasi') {
+                blokPermintaan.style.display = 'none';
+                permintaanSelect.value = '';
+                permintaanSelect.setAttribute('disabled', 'disabled');
+                labelBukti.textContent = 'Bukti Donasi';
+            } else {
+                blokPermintaan.style.display = 'block';
+                permintaanSelect.removeAttribute('disabled');
+                // Kembalikan label untuk mode adopsi
+                labelBukti.textContent = 'Bukti Penerimaan Adopsi';
+                toggleMetode();
+            }
+        }
+
+        function toggleMetode() {
+            let metode = document.getElementById('metode_pembayaran').value;
+            let infoTransfer = document.getElementById('info-transfer');
+            let uploadBukti = document.getElementById('upload-bukti');
+            
+            if(metode == 'tunai') {
+                infoTransfer.style.display = 'none';
+                uploadBukti.style.display = 'none';
+            } else {
+                infoTransfer.style.display = 'block';
+                // tampilkan bukti untuk transfer baik donasi maupun adopsi
+                uploadBukti.style.display = 'block';
+            }
+        }
+        // Run on load
+        toggleJenis();
+        toggleMetode();
+    </script>
 
     <!-- TOMBOL SUBMIT -->
     <button type="submit" class="btn btn-save">

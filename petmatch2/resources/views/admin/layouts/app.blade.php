@@ -29,8 +29,11 @@
     @include('admin.layouts.sidebar')
 
     <div class="body-wrapper">
+      @include('admin.layouts.header')
 
-        @yield('content')
+        <div class="container-fluid" style="padding-top: 80px;">
+            @yield('content')
+        </div>
 
     </div>
 </div>

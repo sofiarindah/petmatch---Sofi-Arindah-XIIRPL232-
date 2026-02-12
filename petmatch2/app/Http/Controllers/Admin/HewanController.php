@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hewan;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -11,19 +12,21 @@ class HewanController extends Controller
 {
     public function index()
     {
-        $hewans = Hewan::latest()->get();
+        $hewans = Hewan::with('category')->latest()->get();
         return view('admin.hewan.index', compact('hewans'));
     }
 
     public function create()
     {
-        return view('admin.hewan.create');
+        $categories = Category::all();
+        return view('admin.hewan.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'nama'       => 'required|string|max:255',
+            'category_id'=> 'required|exists:categories,id',
             'jenis'      => 'required|string|max:100',
             'umur'       => 'required|string|max:50',
             'gender'     => 'required|in:jantan,betina',
@@ -48,13 +51,15 @@ class HewanController extends Controller
 
     public function edit(Hewan $hewan)
     {
-        return view('admin.hewan.edit', compact('hewan'));
+        $categories = Category::all();
+        return view('admin.hewan.edit', compact('hewan', 'categories'));
     }
 
     public function update(Request $request, Hewan $hewan)
     {
         $data = $request->validate([
             'nama'       => 'required|string|max:255',
+            'category_id'=> 'required|exists:categories,id',
             'jenis'      => 'required|string|max:100',
             'umur'       => 'required|string|max:50',
             'gender'     => 'required|in:jantan,betina',

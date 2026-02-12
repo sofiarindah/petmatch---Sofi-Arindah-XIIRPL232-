@@ -202,7 +202,9 @@
                     </div>
                 </div>
 
-</form>
+                <a href="{{ route('user.permintaan.index', ['hewan_id' => $detail->id]) }}" class="btn btn-adopt">
+                    Ajukan Permintaan Adopsi
+                </a>
             </div>
         </div>
     @else

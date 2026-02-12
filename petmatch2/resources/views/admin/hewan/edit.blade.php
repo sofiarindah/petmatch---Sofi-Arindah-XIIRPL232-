@@ -22,9 +22,24 @@
                 @error('nama') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
 
+            {{-- Kategori --}}
+            <div class="mb-3">
+                <label class="form-label">Kategori</label>
+                <select name="category_id" class="form-select @error('category_id') is-invalid @enderror">
+                    <option value="">Pilih Kategori</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}" 
+                            {{ old('category_id', $hewan->category_id) == $cat->id ? 'selected' : '' }}>
+                            {{ $cat->nama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+
             {{-- Jenis --}}
             <div class="mb-3">
-                <label class="form-label">Jenis</label>
+                <label class="form-label">Jenis / Ras</label>
                 <input type="text"
                        name="jenis"
                        class="form-control @error('jenis') is-invalid @enderror"

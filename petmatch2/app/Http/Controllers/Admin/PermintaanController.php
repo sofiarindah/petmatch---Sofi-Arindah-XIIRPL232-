@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Permintaan;
+use Illuminate\Http\Request;
 
 class PermintaanController extends Controller
 {
@@ -16,18 +17,24 @@ class PermintaanController extends Controller
         return view('admin.permintaan.index', compact('permintaans'));
     }
 
-    public function terima($id)
+    public function terima(Request $request, $id)
     {
         $permintaan = Permintaan::findOrFail($id);
-        $permintaan->update(['status' => 'diterima']);
+        $permintaan->update([
+            'status' => 'diterima',
+            'catatan' => $request->input('catatan') // optional
+        ]);
 
         return back()->with('success', 'Permintaan diterima');
     }
 
-    public function tolak($id)
+    public function tolak(Request $request, $id)
     {
         $permintaan = Permintaan::findOrFail($id);
-        $permintaan->update(['status' => 'ditolak']);
+        $permintaan->update([
+            'status' => 'ditolak',
+            'catatan' => $request->input('catatan') // optional
+        ]);
 
         return back()->with('success', 'Permintaan ditolak');
     }
