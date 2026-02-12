@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 19 Jan 2026 pada 08.02
+-- Waktu pembuatan: 12 Feb 2026 pada 06.17
 -- Versi server: 8.0.30
 -- Versi PHP: 8.3.25
 
@@ -229,8 +229,7 @@ INSERT INTO `hewan` (`id`, `category_id`, `nama`, `jenis`, `umur`, `gender`, `de
 (18, NULL, 'Babs', 'Hamster Kerdil Campbell', '1/2 Tahun', 'jantan', 'Hamster Campbell bersifat krepuskular (aktif saat fajar dan senja) dan aktif sepanjang tahun. Mereka adalah hewan sosial meskipun pengawasan tetap dilakukan untuk mencegah agresi teritorial.', '1768540337.jpeg', 'Baik', 'tersedia', '2026-01-15 22:12:17', '2026-01-15 22:12:17'),
 (19, NULL, 'Lin', 'Hamster Roborovski', '1 Tahun', 'betina', 'Dikenal karena kecepatan dan kelincahannya, mereka jarang menggigit tetapi cenderung takut dan cepat.', '1768540654.jpeg', 'Baik', 'tersedia', '2026-01-15 22:17:34', '2026-01-15 22:17:34'),
 (20, NULL, 'Lala', 'Landak Kerdil Afrika', '2 Tahun', 'betina', 'Landak ini adalah hewan noktural yang artinya aktif di malam hari. Lala adalah omnivora, memakan serangga, katak, buah-buahan.', '1768540932.jpeg', 'Baik', 'tersedia', '2026-01-15 22:22:12', '2026-01-15 22:22:12'),
-(21, NULL, 'Len', 'Landak Mini Hedgehog', '2 Tahun', 'jantan', 'Walaupun ukurannya kecil, landak mini dikenal sebagai penjelajah yang luar biasa. Mereka menggunakan moncong panjang dan indra penciuman yang kuat untuk mencari makan di tempat tersembunyi.', '1768541228.jpeg', 'Baik', 'tersedia', '2026-01-15 22:27:08', '2026-01-15 22:27:08'),
-(22, NULL, 'Kima', 'Ragdoll', '1 Tahun', 'betina', 'Sifatnya ramah', '1768541394.jpeg', 'Baik', 'tersedia', '2026-01-15 22:29:54', '2026-01-15 22:29:54');
+(21, NULL, 'Len', 'Landak Mini Hedgehog', '2 Tahun', 'jantan', 'Walaupun ukurannya kecil, landak mini dikenal sebagai penjelajah yang luar biasa. Mereka menggunakan moncong panjang dan indra penciuman yang kuat untuk mencari makan di tempat tersembunyi.', '1768541228.jpeg', 'Baik', 'tersedia', '2026-01-15 22:27:08', '2026-01-15 22:27:08');
 
 -- --------------------------------------------------------
 
@@ -240,7 +239,8 @@ INSERT INTO `hewan` (`id`, `category_id`, `nama`, `jenis`, `umur`, `gender`, `de
 
 CREATE TABLE `messages` (
   `id` bigint UNSIGNED NOT NULL,
-  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
   `chat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status_read` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -251,12 +251,15 @@ CREATE TABLE `messages` (
 -- Dumping data untuk tabel `messages`
 --
 
-INSERT INTO `messages` (`id`, `user_id`, `chat`, `status_read`, `created_at`, `updated_at`) VALUES
-(13, '4', '..', 0, '2026-01-18 19:43:11', '2026-01-18 19:43:11'),
-(14, '8', '.', 0, '2026-01-18 19:58:38', '2026-01-18 19:58:38'),
-(15, '8', '.', 0, '2026-01-18 20:12:23', '2026-01-18 20:12:23'),
-(16, '8', ',', 0, '2026-01-18 20:17:56', '2026-01-18 20:17:56'),
-(17, '9', 'halo', 0, '2026-01-18 21:36:02', '2026-01-18 21:36:02');
+INSERT INTO `messages` (`id`, `user_id`, `is_admin`, `chat`, `status_read`, `created_at`, `updated_at`) VALUES
+(31, 13, 0, 'halo min', 1, '2026-02-10 00:38:23', '2026-02-10 18:24:16'),
+(32, 13, 1, 'halo kak, ada yang bisa saya bantu?', 0, '2026-02-10 00:38:46', '2026-02-10 00:38:46'),
+(33, 13, 0, 'saya ingin donasi kak', 1, '2026-02-10 00:39:03', '2026-02-10 18:24:16'),
+(34, 13, 1, 'baik kak, silahkan di halaman pembayaran ya! Terimakasih', 0, '2026-02-10 00:39:30', '2026-02-10 00:39:30'),
+(35, 1, 0, 'halo', 0, '2026-02-10 18:24:14', '2026-02-10 18:24:14'),
+(36, 16, 0, 'halol', 1, '2026-02-10 18:29:13', '2026-02-10 18:33:06'),
+(37, 16, 0, 'haloo', 1, '2026-02-10 18:29:23', '2026-02-10 18:33:06'),
+(38, 16, 0, 'halo', 1, '2026-02-10 18:32:59', '2026-02-10 18:33:06');
 
 -- --------------------------------------------------------
 
@@ -299,7 +302,18 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (22, '2026_01_15_041706_add_fields_to_users_table', 10),
 (24, '2026_01_16_150635_create_detail_hewan_table', 11),
 (25, '2026_01_19_025031_create_transactions_table', 11),
-(26, '2026_01_19_055302_create_pembayarans_table', 11);
+(26, '2026_01_19_055302_create_pembayarans_table', 11),
+(27, '2026_02_01_013238_create_messages_table', 12),
+(28, '2026_02_01_041526_create_messages_table', 13),
+(29, '2026_02_01_064713_create_chats_table', 14),
+(30, '2026_02_02_021416_create_riwayats_table', 15),
+(31, '2026_02_03_115319_create_messages_table', 16),
+(32, '2026_02_05_004657_add_metode_pembayaran_to_pembayarans_table', 17),
+(33, '2026_02_06_021346_add_category_id_to_hewan_table', 18),
+(34, '2026_02_07_104500_add_alasan_to_permintaans_table', 19),
+(35, '2026_02_07_051532_create_messages_table', 20),
+(36, '2026_02_07_062055_fix_user_id_in_messages_table', 21),
+(37, '2026_02_09_071300_update_permintaan_id_nullable_in_pembayarans_table', 22);
 
 -- --------------------------------------------------------
 
@@ -312,27 +326,42 @@ CREATE TABLE `pembayarans` (
   `user_id` bigint UNSIGNED NOT NULL,
   `kode_pembayaran` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jumlah` int NOT NULL,
+  `metode_pembayaran` enum('transfer','tunai') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'transfer',
   `bukti` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` enum('diajukan','diterima','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'diajukan',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `permintaan_id` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `pembayarans`
 --
 
-INSERT INTO `pembayarans` (`id`, `user_id`, `kode_pembayaran`, `jumlah`, `bukti`, `status`, `created_at`, `updated_at`) VALUES
-(1, 9, 'PAY-JEXKRCSJ', 600000, 'bukti_pembayaran/Rr2XtMZswfW4o4DUmd2SSFUEZgzgf5Qt2CY9jiLg.jpg', 'diajukan', '2026-01-18 23:04:58', '2026-01-18 23:04:58'),
-(2, 9, 'PAY-MDQSTNCT', 10000, NULL, 'diajukan', '2026-01-18 23:10:15', '2026-01-18 23:10:15'),
-(3, 9, 'PAY-MZAY6AGT', 126000, 'bukti_pembayaran/EZM5DcP00plaJ62VBmb6ncKa3GFGHp12v493gTVv.jpg', 'diajukan', '2026-01-18 23:12:59', '2026-01-18 23:12:59'),
-(4, 9, 'PAY-KHCTWWZS', 50000, NULL, 'diajukan', '2026-01-18 23:20:32', '2026-01-18 23:20:32'),
-(5, 9, 'PAY-FQFDP5AC', 50000, NULL, 'diajukan', '2026-01-18 23:36:11', '2026-01-18 23:36:11'),
-(6, 9, 'PAY-TSS0D4ED', 800000, 'bukti_pembayaran/9o9LbPChZDXRcZegYQzsGBUBdpjnnQ1SCrc0K3Hv.jpg', 'diajukan', '2026-01-18 23:40:00', '2026-01-18 23:40:00'),
-(7, 9, 'PAY-KCBUMK8V', 800000, 'bukti_pembayaran/xnQiJfuzw6gtcukhwKktTUKpJwjB1tExlgwoDFak.jpg', 'diajukan', '2026-01-18 23:42:20', '2026-01-18 23:42:20'),
-(8, 9, 'PAY-U9I5AMSP', 40000, NULL, 'diajukan', '2026-01-18 23:42:30', '2026-01-18 23:42:30'),
-(9, 9, 'PAY-2FJWHHPL', 859000, 'bukti_pembayaran/DuDkVZdbkUJsuf5HNXjThCbVbTY5shvONyyxbtFx.jpg', 'diajukan', '2026-01-18 23:51:29', '2026-01-18 23:51:29'),
-(10, 9, 'PAY-EBM82ZX6', 859000, 'bukti_pembayaran/WJyT4C5zftppgxltbtH9kP17mr4Rjn2FMV7oPE59.jpg', 'diterima', '2026-01-19 00:08:58', '2026-01-19 00:35:50');
+INSERT INTO `pembayarans` (`id`, `user_id`, `kode_pembayaran`, `jumlah`, `metode_pembayaran`, `bukti`, `status`, `created_at`, `updated_at`, `permintaan_id`) VALUES
+(17, 12, 'PAY-ZWSWT49E', 2000000, 'transfer', 'bukti_pembayaran/Ai76Q46AFX5NVFDnWU6fda0BipyeFNnYd0giz2HB.png', 'diterima', '2026-02-02 19:07:18', '2026-02-02 19:07:25', NULL),
+(22, 14, 'PAY-8ZNI63MS', 100000, 'transfer', 'bukti_pembayaran/7Bdbck6AAtAqAHeqJrszprASoJQZyLLJrhmNoQeJ.png', 'diterima', '2026-02-03 07:46:05', '2026-02-03 07:46:18', NULL),
+(23, 14, 'PAY-R98LNTM5', 987000, 'transfer', 'bukti_pembayaran/GL7C7YGP2f8yOsPWK1PtTth9xWKP5xrII7xeiCj3.png', 'diterima', '2026-02-03 08:37:41', '2026-02-03 08:38:01', NULL),
+(24, 14, 'PAY-X8W5YLWK', 876000, 'transfer', 'bukti_pembayaran/CPC40hVq3k1OPlnN3UVc3qkslMEuUV3Y32Pwm7jJ.png', 'diterima', '2026-02-03 17:41:10', '2026-02-03 17:41:25', NULL),
+(25, 15, 'PAY-C7OLHUN9', 200000, 'transfer', 'bukti_pembayaran/X5dRlx8WsXfoYgXNhPwRKs4bCZjPVM2UjLfVWclY.png', 'diterima', '2026-02-03 18:12:58', '2026-02-03 18:13:17', NULL),
+(26, 15, 'PAY-GEVSXK2V', 200000, 'transfer', 'bukti_pembayaran/smqUX6jTwlJRNmPRLOyzlRdAEqeLi4GRjUpzFJag.png', 'diterima', '2026-02-03 18:40:03', '2026-02-03 19:13:15', NULL),
+(27, 15, 'PAY-VCHR76GG', 900000, 'tunai', NULL, 'diterima', '2026-02-04 17:55:50', '2026-02-04 17:55:50', NULL),
+(28, 15, 'PAY-NSRSQYTL', 987000, 'tunai', 'bukti_pembayaran/GyM8k1laJuVZ4QTYiTtUPDzvwxBvYhRGsxC66PiC.png', 'diterima', '2026-02-04 19:21:34', '2026-02-04 19:21:56', NULL),
+(29, 1, 'PAY-HVK1PZIF', 569000, 'tunai', NULL, 'ditolak', '2026-02-05 18:49:20', '2026-02-05 18:56:48', NULL),
+(30, 13, 'PAY-BZ53ZJ3J', 710000, 'transfer', 'bukti_pembayaran/HGGQEaGxmkVZTUVt4BAcZONWW4U3Uf8A77PBDKux.png', 'diterima', '2026-02-06 20:36:38', '2026-02-06 22:04:18', NULL),
+(31, 1, 'PAY-OKT9XYGN', 654900, 'tunai', NULL, 'diterima', '2026-02-07 02:33:03', '2026-02-07 02:33:16', NULL),
+(32, 16, 'PAY-1JHSIOPO', 111000, 'tunai', NULL, 'diterima', '2026-02-08 18:05:19', '2026-02-08 18:05:34', NULL),
+(33, 16, 'PAY-GHNE6VN6', 1000000, 'tunai', NULL, 'diterima', '2026-02-09 00:25:56', '2026-02-09 00:26:34', NULL),
+(34, 16, 'PAY-WILO0XXZ', 1220000, 'transfer', NULL, 'diterima', '2026-02-09 00:34:35', '2026-02-09 00:34:55', NULL),
+(35, 16, 'PAY-HIKUFYBD', 550000, 'transfer', 'bukti_pembayaran/QWZwckV0ZMmdKsC1aebUWMWoxFj5CGd9gPDR9l0D.png', 'diterima', '2026-02-09 00:35:38', '2026-02-09 00:35:46', 38),
+(36, 13, 'PAY-U4E1ZMXO', 1000000, 'tunai', NULL, 'diterima', '2026-02-10 00:46:51', '2026-02-10 00:47:03', NULL),
+(37, 16, 'PAY-W7ZMLABH', 1000000, 'tunai', NULL, 'diterima', '2026-02-10 18:32:02', '2026-02-10 18:32:11', 38),
+(38, 16, 'PAY-HE8TZ1OC', 1000000, 'transfer', NULL, 'diterima', '2026-02-10 18:32:25', '2026-02-10 18:32:30', NULL),
+(39, 16, 'PAY-OHNYTRUC', 1000000, 'transfer', 'bukti_pembayaran/MvPHy5mVuHdUqB3DAeEAbzf5qTktWRi7tGWOGaqo.png', 'diterima', '2026-02-10 20:49:08', '2026-02-10 20:54:12', NULL),
+(40, 16, 'PAY-AYFA5G00', 2124000, 'transfer', 'bukti_pembayaran/i2PY6EvYZTbGoZ2e5vfFNurh8Qt0EEvKMHpNSC6J.png', 'diterima', '2026-02-10 20:56:47', '2026-02-10 20:56:59', 38),
+(41, 1, 'PAY-RDGZKXY2', 890000, 'tunai', NULL, 'diterima', '2026-02-11 00:05:23', '2026-02-11 00:05:30', NULL),
+(42, 16, 'PAY-PXIXZWHB', 999000, 'transfer', 'bukti_pembayaran/Nn6oGfRzvYRAxWNQtzBJZDhD7SxflYVReDxafzZP.png', 'diterima', '2026-02-11 00:06:49', '2026-02-11 00:06:57', NULL),
+(43, 16, 'PAY-LKS3QARR', 100000, 'tunai', 'bukti_pembayaran/hbfbkE1iTF5CExFJrl9eR8t5CsDOyTngIsouaoby.png', 'diterima', '2026-02-11 00:36:23', '2026-02-11 00:36:44', 38);
 
 -- --------------------------------------------------------
 
@@ -363,7 +392,37 @@ INSERT INTO `permintaans` (`id`, `user_id`, `hewan_id`, `status`, `catatan`, `cr
 (6, 2, 5, 'ditolak', NULL, '2026-01-13 20:08:44', '2026-01-13 20:09:19', 'Siti', '0895622635498', 'pelajar', 'JL. GAJAH MADA II, KEL MAGERSARI, KEC MAGERSARI, KOTA MOJOKERTO, JATIM', NULL),
 (7, 2, 6, 'diterima', NULL, '2026-01-13 20:09:01', '2026-01-13 20:09:23', 'Siti', '0895622635498', 'pelajar', 'JL. GAJAH MADA II, KEL MAGERSARI, KEC MAGERSARI, KOTA MOJOKERTO, JATIM', NULL),
 (8, 2, 7, 'ditolak', NULL, '2026-01-13 23:01:16', '2026-01-13 23:01:25', 'Siti', '0895622635498', 'pelajar', 'JL. GAJAH MADA II, KEL MAGERSARI, KEC MAGERSARI, KOTA MOJOKERTO, JATIM', NULL),
-(15, 9, 11, 'diterima', NULL, '2026-01-18 22:37:46', '2026-01-18 22:38:04', 'okta', '0895622635498', 'pelajar', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', NULL);
+(24, 12, 4, 'diterima', NULL, '2026-02-02 19:05:03', '2026-02-02 19:05:29', 'sofi', '089519761166', 'pelajar', 'JL. GAJAH MADA II', NULL),
+(25, 13, 7, 'ditolak', NULL, '2026-02-02 21:56:31', '2026-02-03 08:31:22', 'izza', '089519761166', 'pelajar', 'gh', NULL),
+(26, 13, 15, 'diterima', NULL, '2026-02-02 21:57:55', '2026-02-02 21:58:06', 'Complaint Handling_Izza Aulia', '089519761166', 'pelajar', 'JL. GAJAH MADA 2, KEC MAGERSARI, KEL MAGERSARI,  KOTA MOJOKERTO', NULL),
+(27, 14, 13, 'diterima', NULL, '2026-02-03 07:40:59', '2026-02-03 07:41:08', 'Complaint Handling_Izza Aulia', '089519761166', 'pelajar', 'JL. GAJAH MADA 2, KEC MAGERSARI, KEL MAGERSARI,  KOTA MOJOKERTO', NULL),
+(28, 14, 8, 'diterima', NULL, '2026-02-03 17:38:23', '2026-02-03 17:38:41', 'Complaint Handling_Izza Aulia', '089519761166', 'pelajar', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', NULL),
+(29, 15, 19, 'diterima', NULL, '2026-02-03 18:12:02', '2026-02-03 18:12:19', 'Sofi', '0895622635498', 'pelajar', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', NULL),
+(30, 15, 12, 'diterima', NULL, '2026-02-03 18:29:51', '2026-02-03 18:30:05', 'Sofi', '0895622635498', 'pelajar', 'JL. GAJAH MADA 2, KEC MAGERSARI, KEL MAGERSARI,  KOTA MOJOKERTO', NULL),
+(31, 15, 20, 'diterima', NULL, '2026-02-03 18:39:16', '2026-02-03 18:39:32', 'Sofi', '0895622635498', 'pelajar', 'JL. GAJAH MADA 2, KEC MAGERSARI, KEL MAGERSARI,  KOTA MOJOKERTO', NULL),
+(32, 1, 20, 'diterima', NULL, '2026-02-04 18:58:13', '2026-02-04 18:58:23', 'sofi', '0895622635498', 'pelajar', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', NULL),
+(33, 15, 6, 'diterima', NULL, '2026-02-04 18:59:01', '2026-02-04 18:59:11', 'Sofi', '0895622635498', 'pelajar', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', NULL),
+(34, 13, 11, 'diterima', NULL, '2026-02-06 20:46:26', '2026-02-06 20:46:43', 'Aulia', '089519761166', 'pelajar', 'JL. GAJAH MADA 2, KEC MAGERSARI, KEL MAGERSARI,  KOTA MOJOKERTO', NULL),
+(35, 13, 11, 'ditolak', NULL, '2026-02-06 21:31:58', '2026-02-06 22:01:06', 'sofi', '0895622635498', 'tes', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', NULL),
+(36, 13, 14, 'diterima', NULL, '2026-02-06 22:00:56', '2026-02-06 22:01:10', 'lia', '0895622635498', 'tes', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', 'tes'),
+(37, 13, 11, 'ditolak', NULL, '2026-02-06 22:01:39', '2026-02-08 18:22:11', 'revy', '0895622635498', 'pelajar', 'Kost AG 40, kalirungkut, kec Rungkut, surabaya', 'ingin'),
+(38, 16, 11, 'diterima', NULL, '2026-02-08 18:04:37', '2026-02-08 18:04:51', 'bunga', '0895622635498', 'pelajar', 'SMK NEGERI 2 Kota Mojokerto', 'Ingin memeilhara teman baru dirumah');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `riwayats`
+--
+
+CREATE TABLE `riwayats` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `hewan_id` bigint UNSIGNED NOT NULL,
+  `status` enum('selesai','batal') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tanggal_adopsi` timestamp NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -385,23 +444,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('JDpWHDHKBA9ELj9gC4gvil1Y4vI40DtKjxGUixn9', 9, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRTYzaHF5U3MxU05nSHZKSWl5WG9SbW11MmlxbUJQNW4wdVlMbVRNUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC91c2VyLXBlbWJheWFyYW4vMTAvbm90YSI7czo1OiJyb3V0ZSI7czoyMDoidXNlci1wZW1iYXlhcmFuLm5vdGEiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo5O30=', 1768808504);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `transactions`
---
-
-CREATE TABLE `transactions` (
-  `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
-  `kode_transaksi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `total` int NOT NULL,
-  `status` enum('diajukan','diterima','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'diajukan',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+('89oaII7SsnBsdepW8tcESXCNERvxhJx1es59qrMK', 16, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoia1h5dnpScFhlbXVQdGdmTGk2N1A1UDN3UktaRHRScDVEQjQwUE9hZSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Njc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9sYXBvcmFuLWtldWFuZ2FuP2Zyb209JmplbmlzPWFkb3BzaSZ0bz0iO3M6NToicm91dGUiO3M6MjI6ImFkbWluLmxhcG9yYW4ta2V1YW5nYW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxNjt9', 1770876533),
+('S3wraKzTACkjCmdI2ER2bO2mtKa1gqQzY922cxtx', 16, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoibDg2MFBvV3hTdnlJQ1VCR3BhRjQ1R0VGZWg0QU9PVHltWVFUWklUZyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC91c2VyIjtzOjU6InJvdXRlIjtzOjEwOiJ1c2VyLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTY7fQ==', 1770795448);
 
 -- --------------------------------------------------------
 
@@ -430,8 +474,12 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `nama`, `username`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
 (1, '', 'admin', 'admin', 'admin@gmail.com', NULL, '$2y$12$52VwgBYqLjarsSMP6CGTve3Ff2P4ZPwAfuaGIAYa0JJEZM9iL9RQ6', NULL, NULL, '2025-12-16 19:57:42', 'admin'),
 (2, '', 'user', 'User', 'user@gmail.com', NULL, '$2y$12$vUTb5YGJTJYOL.zek8TMj.7rA46038T1eEb1/JcZH0Wrj.zic2D/e', NULL, '2025-12-27 06:29:08', '2025-12-26 23:39:05', 'user'),
-(8, 'sofi', 'sofi', 'sofi', 'sofi@gmail.com', NULL, '$2y$12$S8921LxzEJwQRUq6dIWIG.9dvDAHJKQPZx.IpsGIXvgjDRt92.wHC', NULL, '2026-01-18 19:55:21', '2026-01-18 19:55:21', 'user'),
-(9, 'riris', 'riris', 'riris', 'riris@gmail.com', NULL, '$2y$12$WQuCNm7iRw/NFTzwUOYFXOj1GL4vldfAOvcUD1wU6ddV2pJaehsm.', NULL, '2026-01-18 21:32:40', '2026-01-18 21:32:40', 'user');
+(12, 'sofi', 'sofi', 'sofi', 'sofi@gmail.com', NULL, '$2y$12$AqkE/FojLCvDvi9kqxYlQO./bfmo4SxYYbj39uAuKdhO6ywfqRuba', NULL, '2026-02-02 19:03:41', '2026-02-02 19:03:41', 'user'),
+(13, 'Revy', 'Revy', 'Revy', 'revy@gmail.com', NULL, '$2y$12$1UfGuW.HFz7FUFptBTGImuODUzBQQRQgZvd1MBk/Tb8rmTSDmxeMa', NULL, '2026-02-02 21:27:09', '2026-02-02 21:27:09', 'user'),
+(14, 'cika', 'cika', 'cika', 'cika@gmail.com', NULL, '$2y$12$i2aNFw/RZJtO46x6tbuNBuxVBISZM3MUSrajt4elcH5H7FZVOJdo2', NULL, '2026-02-02 22:51:25', '2026-02-02 22:51:25', 'user'),
+(15, 'koko', 'koko', 'koko', 'koko@gmail.com', NULL, '$2y$12$FhgWeG8133WN6JT7BuA8e.BP34CiL19LwnG3emgkQ2882yTLwwD7C', NULL, '2026-02-03 17:36:20', '2026-02-03 17:36:20', 'user'),
+(16, 'bunga', 'bunga', 'bunga', 'bunga@gmail.com', NULL, '$2y$12$bNJx3kpwH7gQa71QtSSVPe61.p3COdmnffOMfQVhU4AJnBLr0oRNa', NULL, '2026-02-08 18:02:58', '2026-02-08 18:02:58', 'user'),
+(17, 'naura', 'naura', 'naura', 'naura@gmail.com', NULL, '$2y$12$WDU61EFGTwiVDDogNR0bfOl9WZXLl/6xx.8KQp3QedCpYAAncJ1.K', NULL, '2026-02-10 18:22:11', '2026-02-10 18:22:11', 'user');
 
 --
 -- Indexes for dumped tables
@@ -508,7 +556,8 @@ ALTER TABLE `hewan`
 -- Indeks untuk tabel `messages`
 --
 ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `messages_user_id_foreign` (`user_id`);
 
 --
 -- Indeks untuk tabel `migrations`
@@ -522,7 +571,8 @@ ALTER TABLE `migrations`
 ALTER TABLE `pembayarans`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `pembayarans_kode_pembayaran_unique` (`kode_pembayaran`),
-  ADD KEY `pembayarans_user_id_foreign` (`user_id`);
+  ADD KEY `pembayarans_user_id_foreign` (`user_id`),
+  ADD KEY `pembayarans_permintaan_id_foreign` (`permintaan_id`);
 
 --
 -- Indeks untuk tabel `permintaans`
@@ -533,20 +583,20 @@ ALTER TABLE `permintaans`
   ADD KEY `permintaans_hewan_id_foreign` (`hewan_id`);
 
 --
+-- Indeks untuk tabel `riwayats`
+--
+ALTER TABLE `riwayats`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `riwayats_user_id_foreign` (`user_id`),
+  ADD KEY `riwayats_hewan_id_foreign` (`hewan_id`);
+
+--
 -- Indeks untuk tabel `sessions`
 --
 ALTER TABLE `sessions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `sessions_user_id_index` (`user_id`),
   ADD KEY `sessions_last_activity_index` (`last_activity`);
-
---
--- Indeks untuk tabel `transactions`
---
-ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `transactions_kode_transaksi_unique` (`kode_transaksi`),
-  ADD KEY `transactions_user_id_foreign` (`user_id`);
 
 --
 -- Indeks untuk tabel `users`
@@ -612,37 +662,37 @@ ALTER TABLE `hewan`
 -- AUTO_INCREMENT untuk tabel `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT untuk tabel `pembayarans`
 --
 ALTER TABLE `pembayarans`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT untuk tabel `permintaans`
 --
 ALTER TABLE `permintaans`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
--- AUTO_INCREMENT untuk tabel `transactions`
+-- AUTO_INCREMENT untuk tabel `riwayats`
 --
-ALTER TABLE `transactions`
+ALTER TABLE `riwayats`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -668,9 +718,16 @@ ALTER TABLE `hewan`
   ADD CONSTRAINT `fk_hewans_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL;
 
 --
+-- Ketidakleluasaan untuk tabel `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
 -- Ketidakleluasaan untuk tabel `pembayarans`
 --
 ALTER TABLE `pembayarans`
+  ADD CONSTRAINT `pembayarans_permintaan_id_foreign` FOREIGN KEY (`permintaan_id`) REFERENCES `permintaans` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `pembayarans_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
@@ -681,10 +738,11 @@ ALTER TABLE `permintaans`
   ADD CONSTRAINT `permintaans_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `transactions`
+-- Ketidakleluasaan untuk tabel `riwayats`
 --
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `riwayats`
+  ADD CONSTRAINT `riwayats_hewan_id_foreign` FOREIGN KEY (`hewan_id`) REFERENCES `hewan` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `riwayats_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
